@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+html {
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: oklch(0.985 0 0);
+  background-color: oklch(0.141 0.005 285.823);
+}
