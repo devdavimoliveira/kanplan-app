@@ -9,9 +9,9 @@ export const Route = createFileRoute('/_auth')({
 function AuthLayout() {
 	return (
 		<div className='flex h-dvh items-center justify-center'>
-			<div className='flex w-full max-w-[360px] flex-col gap-4'>
+			<div className='flex w-full max-w-lg flex-col gap-4 px-4'>
 				<div className='flex flex-col items-center'>
-					<img src={logo} alt='Kanplan Logo' className='w-[200px]' />
+					<img src={logo} alt='Kanplan Logo' className='w-[240px]' />
 					<p className='text-sm text-zinc-500'>
 						Planejamento visual para equipes ágeis.
 					</p>
