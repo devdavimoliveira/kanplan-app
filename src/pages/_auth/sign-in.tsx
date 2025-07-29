@@ -7,7 +7,7 @@ export const Route = createFileRoute('/_auth/sign-in')({
 	head: () => ({
 		meta: [
 			{
-				title: 'Sign-in | Kanplan',
+				title: 'Login | Kanplan',
 			},
 		],
 	}),
@@ -24,7 +24,7 @@ function SignIn() {
 			<span className='self-center text-sm text-zinc-500'>
 				Não tem uma conta?{' '}
 				<Link to='/sign-up' className='text-cyan-500 hover:underline'>
-					Cadastre-se
+					Inscreva-se
 				</Link>
 			</span>
 		</div>
