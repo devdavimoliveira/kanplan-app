@@ -1,10 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import z from 'zod'
-import { Button } from '../../components/button'
-import { Input } from '../../components/input'
-import { cn } from '../../utils/cn'
+import { Button } from '@/components/button'
+import { Input } from '@/components/input'
+import { PasswordInput } from '@/components/password-input'
+import { authClient } from '@/lib/auth-client'
+import { cn } from '@/utils/cn'
+import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 
 export const Route = createFileRoute('/_auth/sign-in')({
 	component: SignIn,
@@ -18,13 +22,15 @@ export const Route = createFileRoute('/_auth/sign-in')({
 })
 
 const signInSchema = z.object({
-	email: z.email('Insira um e-mail válido.'),
-	password: z.string().nonempty('Insira uma senha.'),
+	email: z.email('Insira um e-mail válido'),
+	password: z.string().nonempty('Insira uma senha'),
 })
 
 type SignInFormType = z.infer<typeof signInSchema>
 
 function SignIn() {
+	const navigate = Route.useNavigate()
+
 	const {
 		register,
 		handleSubmit,
@@ -36,8 +42,19 @@ function SignIn() {
 	const isInvalidEmail = !!errors.email
 	const isInvalidPassword = !!errors.password
 
-	function handleSignIn(data: SignInFormType) {
-		console.log(data)
+	async function handleSignIn(data: SignInFormType) {
+		const { email, password } = data
+
+		await authClient.signIn.email({
+			email,
+			password,
+			fetchOptions: {
+				onError(ctx) {
+					toast.error(getAuthErrorMessage(ctx.error.code))
+				},
+				onSuccess: () => navigate({ to: '/', replace: true }), // TODO: redirect to the org page
+			},
+		})
 	}
 
 	return (
@@ -58,8 +75,7 @@ function SignIn() {
 					)}
 				</div>
 				<div className='flex flex-col gap-2'>
-					<Input
-						type='password'
+					<PasswordInput
 						placeholder='Senha'
 						className={cn(isInvalidPassword && 'outline-2 outline-red-500')}
 						{...register('password')}
