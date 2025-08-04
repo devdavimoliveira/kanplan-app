@@ -4,3 +4,5 @@ export const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_BETTER_AUTH_CLIENT_BASE_URL,
   basePath: import.meta.env.VITE_BETTER_AUTH_CLIENT_BASE_PATH,
 });
+
+export const { useSession, signIn, signUp, signOut, getSession } = authClient;
