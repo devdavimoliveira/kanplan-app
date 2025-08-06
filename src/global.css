@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-xs: 30rem;
+}
+
 html {
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
