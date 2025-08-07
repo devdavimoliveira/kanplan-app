@@ -90,9 +90,9 @@ function SignIn() {
 			</form>
 			<span className='self-center text-sm text-zinc-500'>
 				Não tem uma conta?{' '}
-				<Link to='/sign-up' className='text-cyan-500 hover:underline'>
-					Inscreva-se
-				</Link>
+				<Button variant='link' asChild>
+					<Link to='/sign-up'>Inscreva-se</Link>
+				</Button>
 			</span>
 		</div>
 	)

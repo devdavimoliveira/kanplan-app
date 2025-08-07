@@ -25,9 +25,9 @@ function SignUp() {
 			</form>
 			<span className='self-center text-sm text-zinc-500'>
 				Já tem uma conta?{' '}
-				<Link to='/sign-in' className='text-cyan-500 hover:underline'>
-					Entre
-				</Link>
+				<Button variant='link' asChild>
+					<Link to='/sign-in'>Entre</Link>
+				</Button>
 			</span>
 		</div>
 	)

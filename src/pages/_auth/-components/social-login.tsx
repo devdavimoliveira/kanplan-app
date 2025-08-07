@@ -20,7 +20,8 @@ export function SocialLogin() {
 		<div className='flex flex-col gap-4 sm:flex-row'>
 			<Button
 				type='button'
-				className='flex w-full items-center justify-center text-sm'
+				variant='outline'
+				className='flex-1/2'
 				onClick={signInWithGoogle}
 			>
 				<svg
@@ -45,7 +46,8 @@ export function SocialLogin() {
 			</Button>
 			<Button
 				type='button'
-				className='flex w-full items-center justify-center text-sm'
+				variant='outline'
+				className='flex-1/2'
 				onClick={signInWithGithub}
 			>
 				<svg
