@@ -1,6 +1,7 @@
 import { Eye, EyeOff } from 'lucide-react'
 import { type ComponentProps, useState } from 'react'
 import { cn } from '../utils/cn'
+import { Button } from './button'
 
 interface PasswordInputProps extends Omit<ComponentProps<'input'>, 'type'> {}
 
@@ -21,13 +22,14 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
 				)}
 				{...props}
 			/>
-			<button
+			<Button
 				type='button'
+				variant='ghost'
 				onClick={toggleVisibility}
-				className=' -translate-y-1/2 absolute top-1/2 right-2 transform cursor-pointer rounded-full p-2 transition-colors duration-300 hover:bg-zinc-500/20'
+				className='-translate-y-1/2 absolute top-1/2 right-2 h-auto transform rounded-full p-2'
 			>
 				{isVisible ? <Eye size={18} /> : <EyeOff size={18} />}
-			</button>
+			</Button>
 		</div>
 	)
 }
