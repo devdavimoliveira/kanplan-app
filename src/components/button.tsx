@@ -1,16 +1,43 @@
+import { Slot } from '@radix-ui/react-slot'
+import { cva, type VariantProps } from 'class-variance-authority'
 import type { ComponentProps } from 'react'
 import { cn } from '../utils/cn'
 
-interface ButtonProps extends ComponentProps<'button'> {}
+const buttonVariants = cva(
+	'inline-flex items-center justify-center font-semibold rounded-lg h-10 whitespace-nowrap text-sm cursor-pointer transition-colors duration-300 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2',
+	{
+		variants: {
+			variant: {
+				default:
+					'bg-cyan-600 hover:bg-cyan-600/80 focus-visible:outline-cyan-600',
+				outline:
+					'bg-transparent text-cyan-600 border border-cyan-600 hover:bg-cyan-600 hover:text-zinc-50 focus-visible:outline-cyan-600',
+				ghost:
+					'bg-transparent hover:bg-zinc-800/50 focus-visible:outline-zinc-800 ',
+				link: 'text-cyan-600 hover:underline underline-offset-2',
+			},
+		},
+		defaultVariants: {
+			variant: 'default',
+		},
+	}
+)
 
-export function Button({ className, ...props }: ButtonProps) {
+interface ButtonVariants extends VariantProps<typeof buttonVariants> {}
+
+interface ButtonProps extends ButtonVariants, ComponentProps<'button'> {
+	asChild?: boolean
+}
+
+export function Button({
+	className,
+	variant,
+	asChild = false,
+	...props
+}: ButtonProps) {
+	const Comp = asChild ? Slot : 'button'
+
 	return (
-		<button
-			className={cn(
-				'h-10 cursor-pointer rounded-lg border border-cyan-500 font-semibold text-cyan-500 outline-none transition-colors duration-300 hover:bg-cyan-500 hover:text-inherit focus:bg-cyan-500 focus:text-inherit disabled:cursor-wait disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-cyan-500',
-				className
-			)}
-			{...props}
-		/>
+		<Comp className={cn(buttonVariants({ variant, className }))} {...props} />
 	)
 }
