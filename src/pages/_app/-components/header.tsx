@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
-import { Building, ChevronsUpDown, Menu, Slash } from 'lucide-react'
+import { Building, ChevronsUpDown, Slash } from 'lucide-react'
 import kanplanSymbol from '@/assets/kanplan-symbol.svg'
+import { DropdownMenu } from './dropdown-menu'
 
 export function Header() {
 	return (
@@ -25,9 +26,7 @@ export function Header() {
 				</button>
 			</div>
 
-			<button type='button'>
-				<Menu className='size-7 cursor-pointer' />
-			</button>
+			<DropdownMenu />
 		</header>
 	)
 }
