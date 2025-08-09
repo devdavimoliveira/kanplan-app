@@ -14,6 +14,7 @@ import { Route as AppLayoutRouteImport } from './pages/_app/layout'
 import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
 import { Route as AppOrganizationSetLayoutRouteImport } from './pages/_app/_organization-set/layout'
+import { Route as AppNoOrganizationSetLayoutRouteImport } from './pages/_app/_no-organization-set/layout'
 import { Route as AppOrganizationSetIndexRouteImport } from './pages/_app/_organization-set/index'
 import { Route as AppNoOrganizationSetOrganizationsRouteImport } from './pages/_app/_no-organization-set/organizations'
 
@@ -40,6 +41,11 @@ const AppOrganizationSetLayoutRoute =
     id: '/_organization-set',
     getParentRoute: () => AppLayoutRoute,
   } as any)
+const AppNoOrganizationSetLayoutRoute =
+  AppNoOrganizationSetLayoutRouteImport.update({
+    id: '/_no-organization-set',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
 const AppOrganizationSetIndexRoute = AppOrganizationSetIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -47,9 +53,9 @@ const AppOrganizationSetIndexRoute = AppOrganizationSetIndexRouteImport.update({
 } as any)
 const AppNoOrganizationSetOrganizationsRoute =
   AppNoOrganizationSetOrganizationsRouteImport.update({
-    id: '/_no-organization-set/organizations',
+    id: '/organizations',
     path: '/organizations',
-    getParentRoute: () => AppLayoutRoute,
+    getParentRoute: () => AppNoOrganizationSetLayoutRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -68,6 +74,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppLayoutRouteWithChildren
   '/_auth': typeof AuthLayoutRouteWithChildren
+  '/_app/_no-organization-set': typeof AppNoOrganizationSetLayoutRouteWithChildren
   '/_app/_organization-set': typeof AppOrganizationSetLayoutRouteWithChildren
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
@@ -83,6 +90,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/_auth'
+    | '/_app/_no-organization-set'
     | '/_app/_organization-set'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
@@ -132,6 +140,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationSetLayoutRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app/_no-organization-set': {
+      id: '/_app/_no-organization-set'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppNoOrganizationSetLayoutRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
     '/_app/_organization-set/': {
       id: '/_app/_organization-set/'
       path: '/'
@@ -144,10 +159,25 @@ declare module '@tanstack/react-router' {
       path: '/organizations'
       fullPath: '/organizations'
       preLoaderRoute: typeof AppNoOrganizationSetOrganizationsRouteImport
-      parentRoute: typeof AppLayoutRoute
+      parentRoute: typeof AppNoOrganizationSetLayoutRoute
     }
   }
 }
+
+interface AppNoOrganizationSetLayoutRouteChildren {
+  AppNoOrganizationSetOrganizationsRoute: typeof AppNoOrganizationSetOrganizationsRoute
+}
+
+const AppNoOrganizationSetLayoutRouteChildren: AppNoOrganizationSetLayoutRouteChildren =
+  {
+    AppNoOrganizationSetOrganizationsRoute:
+      AppNoOrganizationSetOrganizationsRoute,
+  }
+
+const AppNoOrganizationSetLayoutRouteWithChildren =
+  AppNoOrganizationSetLayoutRoute._addFileChildren(
+    AppNoOrganizationSetLayoutRouteChildren,
+  )
 
 interface AppOrganizationSetLayoutRouteChildren {
   AppOrganizationSetIndexRoute: typeof AppOrganizationSetIndexRoute
@@ -164,14 +194,13 @@ const AppOrganizationSetLayoutRouteWithChildren =
   )
 
 interface AppLayoutRouteChildren {
+  AppNoOrganizationSetLayoutRoute: typeof AppNoOrganizationSetLayoutRouteWithChildren
   AppOrganizationSetLayoutRoute: typeof AppOrganizationSetLayoutRouteWithChildren
-  AppNoOrganizationSetOrganizationsRoute: typeof AppNoOrganizationSetOrganizationsRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
+  AppNoOrganizationSetLayoutRoute: AppNoOrganizationSetLayoutRouteWithChildren,
   AppOrganizationSetLayoutRoute: AppOrganizationSetLayoutRouteWithChildren,
-  AppNoOrganizationSetOrganizationsRoute:
-    AppNoOrganizationSetOrganizationsRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(

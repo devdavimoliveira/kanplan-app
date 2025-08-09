@@ -8,7 +8,7 @@ interface OrganizationCardProps {
 
 export function OrganizationCard({ organization }: OrganizationCardProps) {
 	return (
-		<Link to='/organizations/$orgSlug' params={{ orgSlug: organization.slug }}>
+		<Link to='/org/$orgSlug' params={{ orgSlug: organization.slug }}>
 			<div className='flex min-h-16 items-center gap-2 rounded-lg bg-zinc-900 p-2'>
 				<Avatar
 					alt='Logo'
