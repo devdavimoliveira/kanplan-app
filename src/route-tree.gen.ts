@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './pages/__root'
 import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
 import { Route as AppLayoutRouteImport } from './pages/_app/layout'
-import { Route as AppIndexRouteImport } from './pages/_app/index'
 import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
+import { Route as AppOrganizationSetLayoutRouteImport } from './pages/_app/_organization-set/layout'
+import { Route as AppOrganizationSetIndexRouteImport } from './pages/_app/_organization-set/index'
+import { Route as AppNoOrganizationSetOrganizationsRouteImport } from './pages/_app/_no-organization-set/organizations'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth',
@@ -22,11 +24,6 @@ const AuthLayoutRoute = AuthLayoutRouteImport.update({
 const AppLayoutRoute = AppLayoutRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppLayoutRoute,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
@@ -38,37 +35,59 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => AuthLayoutRoute,
 } as any)
+const AppOrganizationSetLayoutRoute =
+  AppOrganizationSetLayoutRouteImport.update({
+    id: '/_organization-set',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
+const AppOrganizationSetIndexRoute = AppOrganizationSetIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppOrganizationSetLayoutRoute,
+} as any)
+const AppNoOrganizationSetOrganizationsRoute =
+  AppNoOrganizationSetOrganizationsRouteImport.update({
+    id: '/_no-organization-set/organizations',
+    path: '/organizations',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/': typeof AppIndexRoute
+  '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
+  '/': typeof AppOrganizationSetIndexRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/': typeof AppIndexRoute
+  '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
+  '/': typeof AppOrganizationSetIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppLayoutRouteWithChildren
   '/_auth': typeof AuthLayoutRouteWithChildren
+  '/_app/_organization-set': typeof AppOrganizationSetLayoutRouteWithChildren
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
-  '/_app/': typeof AppIndexRoute
+  '/_app/_no-organization-set/organizations': typeof AppNoOrganizationSetOrganizationsRoute
+  '/_app/_organization-set/': typeof AppOrganizationSetIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/sign-in' | '/sign-up' | '/'
+  fullPaths: '/sign-in' | '/sign-up' | '/organizations' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sign-in' | '/sign-up' | '/'
+  to: '/sign-in' | '/sign-up' | '/organizations' | '/'
   id:
     | '__root__'
     | '/_app'
     | '/_auth'
+    | '/_app/_organization-set'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
-    | '/_app/'
+    | '/_app/_no-organization-set/organizations'
+    | '/_app/_organization-set/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,13 +111,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/': {
-      id: '/_app/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
     '/_auth/sign-up': {
       id: '/_auth/sign-up'
       path: '/sign-up'
@@ -113,15 +125,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof AuthLayoutRoute
     }
+    '/_app/_organization-set': {
+      id: '/_app/_organization-set'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppOrganizationSetLayoutRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/_organization-set/': {
+      id: '/_app/_organization-set/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppOrganizationSetIndexRouteImport
+      parentRoute: typeof AppOrganizationSetLayoutRoute
+    }
+    '/_app/_no-organization-set/organizations': {
+      id: '/_app/_no-organization-set/organizations'
+      path: '/organizations'
+      fullPath: '/organizations'
+      preLoaderRoute: typeof AppNoOrganizationSetOrganizationsRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
   }
 }
 
+interface AppOrganizationSetLayoutRouteChildren {
+  AppOrganizationSetIndexRoute: typeof AppOrganizationSetIndexRoute
+}
+
+const AppOrganizationSetLayoutRouteChildren: AppOrganizationSetLayoutRouteChildren =
+  {
+    AppOrganizationSetIndexRoute: AppOrganizationSetIndexRoute,
+  }
+
+const AppOrganizationSetLayoutRouteWithChildren =
+  AppOrganizationSetLayoutRoute._addFileChildren(
+    AppOrganizationSetLayoutRouteChildren,
+  )
+
 interface AppLayoutRouteChildren {
-  AppIndexRoute: typeof AppIndexRoute
+  AppOrganizationSetLayoutRoute: typeof AppOrganizationSetLayoutRouteWithChildren
+  AppNoOrganizationSetOrganizationsRoute: typeof AppNoOrganizationSetOrganizationsRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
-  AppIndexRoute: AppIndexRoute,
+  AppOrganizationSetLayoutRoute: AppOrganizationSetLayoutRouteWithChildren,
+  AppNoOrganizationSetOrganizationsRoute:
+    AppNoOrganizationSetOrganizationsRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
