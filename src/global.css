@@ -5,6 +5,9 @@
 @theme {
   --breakpoint-xs: 30rem;
   --font-geist: "Geist", sans-serif;
+  --shadow-card:
+    rgba(0, 0, 0, 0.15) 0px 0px 0px 1px,
+    rgba(82, 82, 91, 0.3) 0px 0px 0px 1px inset;
 }
 
 html {
