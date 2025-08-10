@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { Header } from '@/components/header'
 import { getSession } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/_app')({
@@ -11,5 +12,10 @@ export const Route = createFileRoute('/_app')({
 })
 
 function AppLayout() {
-	return <Outlet />
+	return (
+		<div className='h-dvh px-4'>
+			<Header />
+			<Outlet />
+		</div>
+	)
 }

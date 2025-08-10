@@ -13,8 +13,6 @@ import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
 import { Route as AppLayoutRouteImport } from './pages/_app/layout'
 import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
-import { Route as AppOrganizationSetLayoutRouteImport } from './pages/_app/_organization-set/layout'
-import { Route as AppNoOrganizationSetLayoutRouteImport } from './pages/_app/_no-organization-set/layout'
 import { Route as AppOrganizationSetIndexRouteImport } from './pages/_app/_organization-set/index'
 import { Route as AppNoOrganizationSetOrganizationsRouteImport } from './pages/_app/_no-organization-set/organizations'
 
@@ -36,26 +34,16 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => AuthLayoutRoute,
 } as any)
-const AppOrganizationSetLayoutRoute =
-  AppOrganizationSetLayoutRouteImport.update({
-    id: '/_organization-set',
-    getParentRoute: () => AppLayoutRoute,
-  } as any)
-const AppNoOrganizationSetLayoutRoute =
-  AppNoOrganizationSetLayoutRouteImport.update({
-    id: '/_no-organization-set',
-    getParentRoute: () => AppLayoutRoute,
-  } as any)
 const AppOrganizationSetIndexRoute = AppOrganizationSetIndexRouteImport.update({
-  id: '/',
+  id: '/_organization-set/',
   path: '/',
-  getParentRoute: () => AppOrganizationSetLayoutRoute,
+  getParentRoute: () => AppLayoutRoute,
 } as any)
 const AppNoOrganizationSetOrganizationsRoute =
   AppNoOrganizationSetOrganizationsRouteImport.update({
-    id: '/organizations',
+    id: '/_no-organization-set/organizations',
     path: '/organizations',
-    getParentRoute: () => AppNoOrganizationSetLayoutRoute,
+    getParentRoute: () => AppLayoutRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -74,8 +62,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppLayoutRouteWithChildren
   '/_auth': typeof AuthLayoutRouteWithChildren
-  '/_app/_no-organization-set': typeof AppNoOrganizationSetLayoutRouteWithChildren
-  '/_app/_organization-set': typeof AppOrganizationSetLayoutRouteWithChildren
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_app/_no-organization-set/organizations': typeof AppNoOrganizationSetOrganizationsRoute
@@ -90,8 +76,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/_auth'
-    | '/_app/_no-organization-set'
-    | '/_app/_organization-set'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/_app/_no-organization-set/organizations'
@@ -133,74 +117,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof AuthLayoutRoute
     }
-    '/_app/_organization-set': {
-      id: '/_app/_organization-set'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AppOrganizationSetLayoutRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
-    '/_app/_no-organization-set': {
-      id: '/_app/_no-organization-set'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AppNoOrganizationSetLayoutRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
     '/_app/_organization-set/': {
       id: '/_app/_organization-set/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppOrganizationSetIndexRouteImport
-      parentRoute: typeof AppOrganizationSetLayoutRoute
+      parentRoute: typeof AppLayoutRoute
     }
     '/_app/_no-organization-set/organizations': {
       id: '/_app/_no-organization-set/organizations'
       path: '/organizations'
       fullPath: '/organizations'
       preLoaderRoute: typeof AppNoOrganizationSetOrganizationsRouteImport
-      parentRoute: typeof AppNoOrganizationSetLayoutRoute
+      parentRoute: typeof AppLayoutRoute
     }
   }
 }
 
-interface AppNoOrganizationSetLayoutRouteChildren {
+interface AppLayoutRouteChildren {
   AppNoOrganizationSetOrganizationsRoute: typeof AppNoOrganizationSetOrganizationsRoute
-}
-
-const AppNoOrganizationSetLayoutRouteChildren: AppNoOrganizationSetLayoutRouteChildren =
-  {
-    AppNoOrganizationSetOrganizationsRoute:
-      AppNoOrganizationSetOrganizationsRoute,
-  }
-
-const AppNoOrganizationSetLayoutRouteWithChildren =
-  AppNoOrganizationSetLayoutRoute._addFileChildren(
-    AppNoOrganizationSetLayoutRouteChildren,
-  )
-
-interface AppOrganizationSetLayoutRouteChildren {
   AppOrganizationSetIndexRoute: typeof AppOrganizationSetIndexRoute
 }
 
-const AppOrganizationSetLayoutRouteChildren: AppOrganizationSetLayoutRouteChildren =
-  {
-    AppOrganizationSetIndexRoute: AppOrganizationSetIndexRoute,
-  }
-
-const AppOrganizationSetLayoutRouteWithChildren =
-  AppOrganizationSetLayoutRoute._addFileChildren(
-    AppOrganizationSetLayoutRouteChildren,
-  )
-
-interface AppLayoutRouteChildren {
-  AppNoOrganizationSetLayoutRoute: typeof AppNoOrganizationSetLayoutRouteWithChildren
-  AppOrganizationSetLayoutRoute: typeof AppOrganizationSetLayoutRouteWithChildren
-}
-
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
-  AppNoOrganizationSetLayoutRoute: AppNoOrganizationSetLayoutRouteWithChildren,
-  AppOrganizationSetLayoutRoute: AppOrganizationSetLayoutRouteWithChildren,
+  AppNoOrganizationSetOrganizationsRoute:
+    AppNoOrganizationSetOrganizationsRoute,
+  AppOrganizationSetIndexRoute: AppOrganizationSetIndexRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
