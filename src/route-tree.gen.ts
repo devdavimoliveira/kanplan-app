@@ -15,6 +15,7 @@ import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
 import { Route as AppOrganizationSetIndexRouteImport } from './pages/_app/_organization-set/index'
 import { Route as AppNoOrganizationSetOrganizationsRouteImport } from './pages/_app/_no-organization-set/organizations'
+import { Route as AppOrganizationSetOrgOrgSlugRouteImport } from './pages/_app/_organization-set/org/$orgSlug'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth',
@@ -45,18 +46,26 @@ const AppNoOrganizationSetOrganizationsRoute =
     path: '/organizations',
     getParentRoute: () => AppLayoutRoute,
   } as any)
+const AppOrganizationSetOrgOrgSlugRoute =
+  AppOrganizationSetOrgOrgSlugRouteImport.update({
+    id: '/_organization-set/org/$orgSlug',
+    path: '/org/$orgSlug',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/': typeof AppOrganizationSetIndexRoute
+  '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/': typeof AppOrganizationSetIndexRoute
+  '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,12 +75,13 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_app/_no-organization-set/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/_app/_organization-set/': typeof AppOrganizationSetIndexRoute
+  '/_app/_organization-set/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/sign-in' | '/sign-up' | '/organizations' | '/'
+  fullPaths: '/sign-in' | '/sign-up' | '/organizations' | '/' | '/org/$orgSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sign-in' | '/sign-up' | '/organizations' | '/'
+  to: '/sign-in' | '/sign-up' | '/organizations' | '/' | '/org/$orgSlug'
   id:
     | '__root__'
     | '/_app'
@@ -80,6 +90,7 @@ export interface FileRouteTypes {
     | '/_auth/sign-up'
     | '/_app/_no-organization-set/organizations'
     | '/_app/_organization-set/'
+    | '/_app/_organization-set/org/$orgSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,18 +142,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppNoOrganizationSetOrganizationsRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app/_organization-set/org/$orgSlug': {
+      id: '/_app/_organization-set/org/$orgSlug'
+      path: '/org/$orgSlug'
+      fullPath: '/org/$orgSlug'
+      preLoaderRoute: typeof AppOrganizationSetOrgOrgSlugRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
   }
 }
 
 interface AppLayoutRouteChildren {
   AppNoOrganizationSetOrganizationsRoute: typeof AppNoOrganizationSetOrganizationsRoute
   AppOrganizationSetIndexRoute: typeof AppOrganizationSetIndexRoute
+  AppOrganizationSetOrgOrgSlugRoute: typeof AppOrganizationSetOrgOrgSlugRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppNoOrganizationSetOrganizationsRoute:
     AppNoOrganizationSetOrganizationsRoute,
   AppOrganizationSetIndexRoute: AppOrganizationSetIndexRoute,
+  AppOrganizationSetOrgOrgSlugRoute: AppOrganizationSetOrgOrgSlugRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
