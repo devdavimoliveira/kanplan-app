@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from '@tanstack/react-router'
-import { nanoid } from 'nanoid'
 import type { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
 import { organization } from '@/lib/auth-client'
+import { generateSlug } from '@/utils/generate-slug'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { Button } from './button'
 import { Input } from './input'
@@ -33,17 +33,18 @@ export function NewOrganizationDialog({ trigger }: NewOrganizationDialogProps) {
 	})
 
 	async function handleNewOrganization({ name }: NewOrganizationFormType) {
-		const orgSlug = nanoid()
+		const orgSlug = generateSlug()
 
 		await organization.create({
 			name,
 			slug: orgSlug,
-			keepCurrentActiveOrganization: false,
 			fetchOptions: {
-				onError(ctx) {
-					toast.error(getAuthErrorMessage(ctx.error.code))
+				onError({ error }) {
+					toast.error(getAuthErrorMessage(error.code))
 				},
-				onSuccess: () => navigate({ to: '/' }),
+				onSuccess: () => {
+					navigate({ to: '/org/$orgSlug', params: { orgSlug } })
+				},
 			},
 		})
 	}
