@@ -53,7 +53,7 @@ function SignUp() {
 				onError(ctx) {
 					toast.error(getAuthErrorMessage(ctx.error.code))
 				},
-				onSuccess: () => navigate({ to: '/', replace: true }),
+				onSuccess: () => navigate({ to: '/organizations', replace: true }),
 			},
 		})
 	}

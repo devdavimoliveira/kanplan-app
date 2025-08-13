@@ -52,7 +52,7 @@ function SignIn() {
 				onError(ctx) {
 					toast.error(getAuthErrorMessage(ctx.error.code))
 				},
-				onSuccess: () => navigate({ to: '/', replace: true }), // TODO: redirect to the org page
+				onSuccess: () => navigate({ to: '/organizations', replace: true }), // TODO: redirect to the org page
 			},
 		})
 	}
