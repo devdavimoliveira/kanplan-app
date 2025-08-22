@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { organization } from '@/lib/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
+import { BoardsGrid } from './-components/boards-grid'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
 	beforeLoad: async ({ params }) => {
@@ -35,5 +36,10 @@ export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
 function Organization() {
 	const { activeOrganization } = Route.useRouteContext()
 
-	return <div>{activeOrganization?.name}</div>
+	return (
+		<div className='mx-auto flex max-w-5xl flex-col gap-8 py-8'>
+			<h1 className='font-medium text-2xl'>Quadros</h1>
+			<BoardsGrid organizationId={activeOrganization!.id} />
+		</div>
+	)
 }
