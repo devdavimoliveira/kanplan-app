@@ -2,7 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useMutation } from '@tanstack/react-query'
-import type { ReactNode } from 'react'
+import { X } from 'lucide-react'
+import { type ReactNode, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -30,6 +31,8 @@ interface NewBoardDialogProps {
 }
 
 export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
+	const [open, setOpen] = useState(false)
+
 	const {
 		handleSubmit,
 		register,
@@ -51,6 +54,8 @@ export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
 				reset()
 
 				queryClient.invalidateQueries({ queryKey: ['boards', organization.id] })
+
+				setOpen(false)
 			},
 			onError: () => {
 				toast.error('Ocorreu um erro ao criar o quadro')
@@ -63,7 +68,7 @@ export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
 	}
 
 	return (
-		<Dialog.Root>
+		<Dialog.Root open={open} onOpenChange={setOpen}>
 			<Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 
 			<Dialog.Portal>
@@ -115,6 +120,16 @@ export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
 							Criar quadro
 						</Button>
 					</form>
+
+					<Dialog.Close asChild>
+						<Button
+							variant='ghost'
+							onClick={() => setOpen(false)}
+							className='absolute top-2 right-1.5 h-auto p-0.5'
+						>
+							<X size={24} />
+						</Button>
+					</Dialog.Close>
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
