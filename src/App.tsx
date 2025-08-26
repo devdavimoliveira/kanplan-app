@@ -7,7 +7,7 @@ import { routeTree } from './route-tree.gen'
 const router = createRouter({
 	routeTree,
 	context: { queryClient },
-	defaultPreload: 'intent',
+	// defaultPreload: 'intent', // disabled preloading
 	defaultPreloadStaleTime: 0,
 })
 
