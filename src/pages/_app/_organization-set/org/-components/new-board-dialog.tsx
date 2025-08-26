@@ -1,12 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { useMutation } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import z from 'zod'
 import { Button } from '@/components/button'
 import { ColorPicker } from '@/components/color-picker'
 import { Input } from '@/components/input'
+import { queryClient } from '@/lib/query-client'
+import { createBoardMutationOptions } from '@/mutations/boards-mutations'
 import type { Organization } from '@/types/Organization'
 import { cn } from '@/utils/cn'
 
@@ -31,7 +35,7 @@ export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
 		register,
 		control,
 		reset,
-		formState: { errors, isSubmitting },
+		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(newBoardSchema),
 		defaultValues: {
@@ -41,9 +45,21 @@ export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
 		},
 	})
 
+	const { mutate, isPending } = useMutation(
+		createBoardMutationOptions({
+			onSuccess: () => {
+				reset()
+
+				queryClient.invalidateQueries({ queryKey: ['boards', organization.id] })
+			},
+			onError: () => {
+				toast.error('Ocorreu um erro ao criar o quadro')
+			},
+		})
+	)
+
 	function handleNewBoard(data: NewBoardFormType) {
-		console.log(data)
-		reset()
+		mutate(data)
 	}
 
 	return (
@@ -91,7 +107,11 @@ export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
 							/>
 						</div>
 
-						<Button type='submit' disabled={isSubmitting}>
+						<Button
+							type='submit'
+							disabled={isPending}
+							className='disabled:pointer-events-auto disabled:cursor-wait'
+						>
 							Criar quadro
 						</Button>
 					</form>
