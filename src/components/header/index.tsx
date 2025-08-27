@@ -1,8 +1,9 @@
 import { Link, useMatchRoute } from '@tanstack/react-router'
-import { Building, ChevronsUpDown, Slash } from 'lucide-react'
+import { Building, Slash } from 'lucide-react'
 import kanplanSymbol from '@/assets/kanplan-symbol.svg'
 import { useActiveOrganization } from '@/lib/auth-client'
 import { DropdownMenu } from './dropdown-menu'
+import { DropdownOrganizations } from './dropdown-organizations'
 
 export function Header() {
 	const { data: activeOrganization, isPending } = useActiveOrganization()
@@ -38,11 +39,7 @@ export function Header() {
 					</Link>
 				)}
 
-				{!matchOrganizationRoute && (
-					<button type='button' className='cursor-pointer'>
-						<ChevronsUpDown className='size-4.5 text-zinc-500' />
-					</button>
-				)}
+				{!matchOrganizationRoute && <DropdownOrganizations />}
 			</div>
 
 			<DropdownMenu />
