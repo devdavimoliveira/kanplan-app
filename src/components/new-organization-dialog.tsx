@@ -19,9 +19,13 @@ type NewOrganizationFormType = z.infer<typeof newOrganizationSchema>
 
 interface NewOrganizationDialogProps {
 	trigger: ReactNode
+	onSuccess?: () => void
 }
 
-export function NewOrganizationDialog({ trigger }: NewOrganizationDialogProps) {
+export function NewOrganizationDialog({
+	trigger,
+	onSuccess,
+}: NewOrganizationDialogProps) {
 	const navigate = useNavigate()
 
 	const {
@@ -44,6 +48,7 @@ export function NewOrganizationDialog({ trigger }: NewOrganizationDialogProps) {
 				},
 				onSuccess: () => {
 					navigate({ to: '/org/$orgSlug', params: { orgSlug } })
+					onSuccess?.()
 				},
 			},
 		})

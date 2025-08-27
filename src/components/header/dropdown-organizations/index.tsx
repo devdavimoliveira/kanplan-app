@@ -54,6 +54,7 @@ export function DropdownOrganizations() {
 								<span>Nova organização</span>
 							</Button>
 						}
+						onSuccess={() => setOpen(false)}
 					/>
 				</DropdownPrimitive.Content>
 			</DropdownPrimitive.Portal>
