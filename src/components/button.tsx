@@ -13,13 +13,25 @@ const buttonVariants = cva(
 				outline:
 					'bg-transparent text-cyan-600 border border-cyan-600 hover:bg-cyan-600 hover:text-zinc-50 focus-visible:outline-cyan-600',
 				ghost:
-					'bg-transparent hover:bg-zinc-800/50 focus-visible:outline-zinc-800 ',
+					'bg-transparent hover:bg-zinc-800/50 focus-visible:outline-zinc-800',
 				link: 'text-cyan-600 hover:underline underline-offset-2',
+			},
+			active: {
+				true: null,
+				false: null,
 			},
 		},
 		defaultVariants: {
 			variant: 'default',
+			active: false,
 		},
+		compoundVariants: [
+			{
+				variant: 'ghost',
+				active: true,
+				className: 'bg-zinc-800/50',
+			},
+		],
 	}
 )
 
@@ -27,17 +39,22 @@ interface ButtonVariants extends VariantProps<typeof buttonVariants> {}
 
 interface ButtonProps extends ButtonVariants, ComponentProps<'button'> {
 	asChild?: boolean
+	active?: boolean
 }
 
 export function Button({
 	className,
 	variant,
 	asChild = false,
+	active = false,
 	...props
 }: ButtonProps) {
 	const Comp = asChild ? Slot : 'button'
 
 	return (
-		<Comp className={cn(buttonVariants({ variant, className }))} {...props} />
+		<Comp
+			className={cn(buttonVariants({ variant, active }), className)}
+			{...props}
+		/>
 	)
 }
