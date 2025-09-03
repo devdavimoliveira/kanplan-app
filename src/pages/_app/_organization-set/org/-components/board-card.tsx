@@ -7,7 +7,7 @@ interface BoardCardProps {
 
 export function BoardCard({ board }: BoardCardProps) {
 	return (
-		<Link to='/'>
+		<Link to='/board/$boardId' params={{ boardId: board.id }}>
 			<div className='flex h-30 flex-col rounded-lg bg-zinc-900 shadow-card'>
 				<div
 					className='h-full rounded-t-lg'
