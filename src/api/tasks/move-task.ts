@@ -8,7 +8,7 @@ export interface MoveTaskBody {
 }
 
 export async function moveTask(body: MoveTaskBody) {
-	const { data } = await api.put(`/tasks/move`, body)
+	const { data } = await api.patch(`/tasks/move`, body)
 
 	return data
 }
