@@ -8,7 +8,7 @@ interface TabProps extends LinkProps {
 export function Tab({ name, ...props }: TabProps) {
 	const matchRoute = useMatchRoute()
 
-	const isActive = !!matchRoute({ to: props.to, fuzzy: true })
+	const isActive = !!matchRoute({ to: props.to })
 
 	return (
 		<Link

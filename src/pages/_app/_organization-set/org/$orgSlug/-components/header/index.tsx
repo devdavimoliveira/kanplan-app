@@ -12,6 +12,13 @@ export function OrganizationHeader() {
 				orgSlug: activeOrganization?.slug,
 			},
 		},
+		{
+			name: 'Equipe',
+			path: '/org/$orgSlug/team',
+			params: {
+				orgSlug: activeOrganization?.slug,
+			},
+		},
 	]
 
 	return <Tabs tabs={tabs} />

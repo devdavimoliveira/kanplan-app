@@ -1,7 +1,8 @@
 import type { RegisteredRouter } from '@tanstack/react-router'
+import type { FileRoutesByTo } from '@/route-tree.gen'
 import { Tab } from './tab'
 
-type Path = keyof RegisteredRouter['routesByPath']
+type Path = keyof FileRoutesByTo
 
 export interface ITab {
 	name: string
