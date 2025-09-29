@@ -13,12 +13,14 @@ export function Tab({ name, ...props }: TabProps) {
 	return (
 		<Link
 			className={cn(
-				'flex h-full items-center justify-center border-transparent border-b px-2.5 text-sm transition-colors duration-300',
+				'group flex h-full border-transparent border-b py-1 text-sm transition-colors duration-300',
 				isActive && 'border-cyan-500'
 			)}
 			{...props}
 		>
-			{name}
+			<div className='flex items-center rounded px-2 transition-colors duration-300 group-hover:bg-zinc-800/50'>
+				{name}
+			</div>
 		</Link>
 	)
 }

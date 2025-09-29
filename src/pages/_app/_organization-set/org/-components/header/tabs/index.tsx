@@ -9,8 +9,10 @@ export interface ITab {
 	params?: RegisteredRouter['routesByPath'][Path]['types']['params']
 }
 
+export type ITabs = ITab[]
+
 interface TabsProps {
-	tabs: ITab[]
+	tabs: ITabs
 }
 
 export function Tabs({ tabs }: TabsProps) {
