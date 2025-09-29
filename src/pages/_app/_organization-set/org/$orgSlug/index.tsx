@@ -6,7 +6,7 @@ import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { BoardsGrid } from './-components/boards-grid'
 import { NewBoardDialog } from './-components/new-board-dialog'
 
-export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
+export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug/')({
 	beforeLoad: async ({ params }) => {
 		const { data: activeOrganization } = await organization.getFullOrganization(
 			{

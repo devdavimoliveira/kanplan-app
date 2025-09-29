@@ -15,9 +15,10 @@ import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
 import { Route as AppOrganizationSetIndexRouteImport } from './pages/_app/_organization-set/index'
 import { Route as AppNoOrganizationSetOrganizationsRouteImport } from './pages/_app/_no-organization-set/organizations'
-import { Route as AppOrganizationSetOrgLayoutRouteImport } from './pages/_app/_organization-set/org/layout'
-import { Route as AppOrganizationSetOrgOrgSlugRouteImport } from './pages/_app/_organization-set/org/$orgSlug'
 import { Route as AppOrganizationSetBoardBoardIdRouteImport } from './pages/_app/_organization-set/board/$boardId'
+import { Route as AppOrganizationSetOrgOrgSlugLayoutRouteImport } from './pages/_app/_organization-set/org/$orgSlug/layout'
+import { Route as AppOrganizationSetOrgOrgSlugIndexRouteImport } from './pages/_app/_organization-set/org/$orgSlug/index'
+import { Route as AppOrganizationSetOrgOrgSlugTeamRouteImport } from './pages/_app/_organization-set/org/$orgSlug/team'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth',
@@ -48,42 +49,49 @@ const AppNoOrganizationSetOrganizationsRoute =
     path: '/organizations',
     getParentRoute: () => AppLayoutRoute,
   } as any)
-const AppOrganizationSetOrgLayoutRoute =
-  AppOrganizationSetOrgLayoutRouteImport.update({
-    id: '/_organization-set/org',
-    path: '/org',
-    getParentRoute: () => AppLayoutRoute,
-  } as any)
-const AppOrganizationSetOrgOrgSlugRoute =
-  AppOrganizationSetOrgOrgSlugRouteImport.update({
-    id: '/$orgSlug',
-    path: '/$orgSlug',
-    getParentRoute: () => AppOrganizationSetOrgLayoutRoute,
-  } as any)
 const AppOrganizationSetBoardBoardIdRoute =
   AppOrganizationSetBoardBoardIdRouteImport.update({
     id: '/_organization-set/board/$boardId',
     path: '/board/$boardId',
     getParentRoute: () => AppLayoutRoute,
   } as any)
+const AppOrganizationSetOrgOrgSlugLayoutRoute =
+  AppOrganizationSetOrgOrgSlugLayoutRouteImport.update({
+    id: '/_organization-set/org/$orgSlug',
+    path: '/org/$orgSlug',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
+const AppOrganizationSetOrgOrgSlugIndexRoute =
+  AppOrganizationSetOrgOrgSlugIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AppOrganizationSetOrgOrgSlugLayoutRoute,
+  } as any)
+const AppOrganizationSetOrgOrgSlugTeamRoute =
+  AppOrganizationSetOrgOrgSlugTeamRouteImport.update({
+    id: '/team',
+    path: '/team',
+    getParentRoute: () => AppOrganizationSetOrgOrgSlugLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/org': typeof AppOrganizationSetOrgLayoutRouteWithChildren
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/': typeof AppOrganizationSetIndexRoute
+  '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   '/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
-  '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugRoute
+  '/org/$orgSlug/team': typeof AppOrganizationSetOrgOrgSlugTeamRoute
+  '/org/$orgSlug/': typeof AppOrganizationSetOrgOrgSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/org': typeof AppOrganizationSetOrgLayoutRouteWithChildren
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/': typeof AppOrganizationSetIndexRoute
   '/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
-  '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugRoute
+  '/org/$orgSlug/team': typeof AppOrganizationSetOrgOrgSlugTeamRoute
+  '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -91,30 +99,32 @@ export interface FileRoutesById {
   '/_auth': typeof AuthLayoutRouteWithChildren
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
-  '/_app/_organization-set/org': typeof AppOrganizationSetOrgLayoutRouteWithChildren
   '/_app/_no-organization-set/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/_app/_organization-set/': typeof AppOrganizationSetIndexRoute
+  '/_app/_organization-set/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   '/_app/_organization-set/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
-  '/_app/_organization-set/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugRoute
+  '/_app/_organization-set/org/$orgSlug/team': typeof AppOrganizationSetOrgOrgSlugTeamRoute
+  '/_app/_organization-set/org/$orgSlug/': typeof AppOrganizationSetOrgOrgSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/sign-in'
     | '/sign-up'
-    | '/org'
     | '/organizations'
     | '/'
-    | '/board/$boardId'
     | '/org/$orgSlug'
+    | '/board/$boardId'
+    | '/org/$orgSlug/team'
+    | '/org/$orgSlug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sign-in'
     | '/sign-up'
-    | '/org'
     | '/organizations'
     | '/'
     | '/board/$boardId'
+    | '/org/$orgSlug/team'
     | '/org/$orgSlug'
   id:
     | '__root__'
@@ -122,11 +132,12 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
-    | '/_app/_organization-set/org'
     | '/_app/_no-organization-set/organizations'
     | '/_app/_organization-set/'
-    | '/_app/_organization-set/board/$boardId'
     | '/_app/_organization-set/org/$orgSlug'
+    | '/_app/_organization-set/board/$boardId'
+    | '/_app/_organization-set/org/$orgSlug/team'
+    | '/_app/_organization-set/org/$orgSlug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -178,20 +189,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppNoOrganizationSetOrganizationsRouteImport
       parentRoute: typeof AppLayoutRoute
     }
-    '/_app/_organization-set/org': {
-      id: '/_app/_organization-set/org'
-      path: '/org'
-      fullPath: '/org'
-      preLoaderRoute: typeof AppOrganizationSetOrgLayoutRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
-    '/_app/_organization-set/org/$orgSlug': {
-      id: '/_app/_organization-set/org/$orgSlug'
-      path: '/$orgSlug'
-      fullPath: '/org/$orgSlug'
-      preLoaderRoute: typeof AppOrganizationSetOrgOrgSlugRouteImport
-      parentRoute: typeof AppOrganizationSetOrgLayoutRoute
-    }
     '/_app/_organization-set/board/$boardId': {
       id: '/_app/_organization-set/board/$boardId'
       path: '/board/$boardId'
@@ -199,36 +196,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationSetBoardBoardIdRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app/_organization-set/org/$orgSlug': {
+      id: '/_app/_organization-set/org/$orgSlug'
+      path: '/org/$orgSlug'
+      fullPath: '/org/$orgSlug'
+      preLoaderRoute: typeof AppOrganizationSetOrgOrgSlugLayoutRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/_organization-set/org/$orgSlug/': {
+      id: '/_app/_organization-set/org/$orgSlug/'
+      path: '/'
+      fullPath: '/org/$orgSlug/'
+      preLoaderRoute: typeof AppOrganizationSetOrgOrgSlugIndexRouteImport
+      parentRoute: typeof AppOrganizationSetOrgOrgSlugLayoutRoute
+    }
+    '/_app/_organization-set/org/$orgSlug/team': {
+      id: '/_app/_organization-set/org/$orgSlug/team'
+      path: '/team'
+      fullPath: '/org/$orgSlug/team'
+      preLoaderRoute: typeof AppOrganizationSetOrgOrgSlugTeamRouteImport
+      parentRoute: typeof AppOrganizationSetOrgOrgSlugLayoutRoute
+    }
   }
 }
 
-interface AppOrganizationSetOrgLayoutRouteChildren {
-  AppOrganizationSetOrgOrgSlugRoute: typeof AppOrganizationSetOrgOrgSlugRoute
+interface AppOrganizationSetOrgOrgSlugLayoutRouteChildren {
+  AppOrganizationSetOrgOrgSlugTeamRoute: typeof AppOrganizationSetOrgOrgSlugTeamRoute
+  AppOrganizationSetOrgOrgSlugIndexRoute: typeof AppOrganizationSetOrgOrgSlugIndexRoute
 }
 
-const AppOrganizationSetOrgLayoutRouteChildren: AppOrganizationSetOrgLayoutRouteChildren =
+const AppOrganizationSetOrgOrgSlugLayoutRouteChildren: AppOrganizationSetOrgOrgSlugLayoutRouteChildren =
   {
-    AppOrganizationSetOrgOrgSlugRoute: AppOrganizationSetOrgOrgSlugRoute,
+    AppOrganizationSetOrgOrgSlugTeamRoute:
+      AppOrganizationSetOrgOrgSlugTeamRoute,
+    AppOrganizationSetOrgOrgSlugIndexRoute:
+      AppOrganizationSetOrgOrgSlugIndexRoute,
   }
 
-const AppOrganizationSetOrgLayoutRouteWithChildren =
-  AppOrganizationSetOrgLayoutRoute._addFileChildren(
-    AppOrganizationSetOrgLayoutRouteChildren,
+const AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren =
+  AppOrganizationSetOrgOrgSlugLayoutRoute._addFileChildren(
+    AppOrganizationSetOrgOrgSlugLayoutRouteChildren,
   )
 
 interface AppLayoutRouteChildren {
-  AppOrganizationSetOrgLayoutRoute: typeof AppOrganizationSetOrgLayoutRouteWithChildren
   AppNoOrganizationSetOrganizationsRoute: typeof AppNoOrganizationSetOrganizationsRoute
   AppOrganizationSetIndexRoute: typeof AppOrganizationSetIndexRoute
+  AppOrganizationSetOrgOrgSlugLayoutRoute: typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   AppOrganizationSetBoardBoardIdRoute: typeof AppOrganizationSetBoardBoardIdRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
-  AppOrganizationSetOrgLayoutRoute:
-    AppOrganizationSetOrgLayoutRouteWithChildren,
   AppNoOrganizationSetOrganizationsRoute:
     AppNoOrganizationSetOrganizationsRoute,
   AppOrganizationSetIndexRoute: AppOrganizationSetIndexRoute,
+  AppOrganizationSetOrgOrgSlugLayoutRoute:
+    AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren,
   AppOrganizationSetBoardBoardIdRoute: AppOrganizationSetBoardBoardIdRoute,
 }
 
