@@ -13,6 +13,7 @@ import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
 import { Route as AppLayoutRouteImport } from './pages/_app/layout'
 import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
+import { Route as InviteInvitationIdIndexRouteImport } from './pages/invite/$invitationId/index'
 import { Route as AppOrganizationSetIndexRouteImport } from './pages/_app/_organization-set/index'
 import { Route as AppNoOrganizationSetOrganizationsRouteImport } from './pages/_app/_no-organization-set/organizations'
 import { Route as AppOrganizationSetBoardBoardIdRouteImport } from './pages/_app/_organization-set/board/$boardId'
@@ -37,6 +38,11 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
   getParentRoute: () => AuthLayoutRoute,
+} as any)
+const InviteInvitationIdIndexRoute = InviteInvitationIdIndexRouteImport.update({
+  id: '/invite/$invitationId/',
+  path: '/invite/$invitationId/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppOrganizationSetIndexRoute = AppOrganizationSetIndexRouteImport.update({
   id: '/_organization-set/',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthSignUpRoute
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/': typeof AppOrganizationSetIndexRoute
+  '/invite/$invitationId': typeof InviteInvitationIdIndexRoute
   '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   '/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
   '/org/$orgSlug/': typeof AppOrganizationSetOrgOrgSlugIndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof AuthSignUpRoute
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/': typeof AppOrganizationSetIndexRoute
+  '/invite/$invitationId': typeof InviteInvitationIdIndexRoute
   '/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
   '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugIndexRoute
   '/org/$orgSlug/team': typeof AppOrganizationSetOrgOrgSlugTeamIndexRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_app/_no-organization-set/organizations': typeof AppNoOrganizationSetOrganizationsRoute
   '/_app/_organization-set/': typeof AppOrganizationSetIndexRoute
+  '/invite/$invitationId/': typeof InviteInvitationIdIndexRoute
   '/_app/_organization-set/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   '/_app/_organization-set/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
   '/_app/_organization-set/org/$orgSlug/': typeof AppOrganizationSetOrgOrgSlugIndexRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/organizations'
     | '/'
+    | '/invite/$invitationId'
     | '/org/$orgSlug'
     | '/board/$boardId'
     | '/org/$orgSlug/'
@@ -123,6 +133,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/organizations'
     | '/'
+    | '/invite/$invitationId'
     | '/board/$boardId'
     | '/org/$orgSlug'
     | '/org/$orgSlug/team'
@@ -134,6 +145,7 @@ export interface FileRouteTypes {
     | '/_auth/sign-up'
     | '/_app/_no-organization-set/organizations'
     | '/_app/_organization-set/'
+    | '/invite/$invitationId/'
     | '/_app/_organization-set/org/$orgSlug'
     | '/_app/_organization-set/board/$boardId'
     | '/_app/_organization-set/org/$orgSlug/'
@@ -143,6 +155,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AppLayoutRoute: typeof AppLayoutRouteWithChildren
   AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
+  InviteInvitationIdIndexRoute: typeof InviteInvitationIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/sign-in'
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof AuthLayoutRoute
+    }
+    '/invite/$invitationId/': {
+      id: '/invite/$invitationId/'
+      path: '/invite/$invitationId'
+      fullPath: '/invite/$invitationId'
+      preLoaderRoute: typeof InviteInvitationIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/_organization-set/': {
       id: '/_app/_organization-set/'
@@ -275,6 +295,7 @@ const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AppLayoutRoute: AppLayoutRouteWithChildren,
   AuthLayoutRoute: AuthLayoutRouteWithChildren,
+  InviteInvitationIdIndexRoute: InviteInvitationIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
