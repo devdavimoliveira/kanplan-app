@@ -1,13 +1,42 @@
+import { useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
-import { useActiveOrganization, useSession } from '@/lib/auth-client'
+import {
+	organization,
+	useActiveOrganization,
+	useSession,
+} from '@/lib/auth-client'
 import { type Role, RoleEnum } from '@/types/Role'
+import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 
 export function MembersTable() {
+	const navigate = useNavigate()
+
 	const { data: activeOrganization } = useActiveOrganization()
 
 	const { data: session } = useSession()
+
+	async function handleLeaveOrganization() {
+		if (!activeOrganization) return
+
+		await organization.leave({
+			organizationId: activeOrganization.id,
+			fetchOptions: {
+				onError({ error }) {
+					toast.error(getAuthErrorMessage(error.code))
+				},
+				onSuccess() {
+					navigate({
+						to: '/organizations',
+						replace: true,
+						reloadDocument: true,
+					})
+				},
+			},
+		})
+	}
 
 	return (
 		<table className='w-full'>
@@ -43,14 +72,17 @@ export function MembersTable() {
 							{translateRoleToPtBR(member.role as Role)}
 						</td>
 						<td className='p-4 text-right'>
-							<Button
-								type='button'
-								variant='outline'
-								className='h-9 px-2'
-								disabled={member.role === RoleEnum.OWNER}
-							>
-								Deixar equipe
-							</Button>
+							{session?.user.id === member.user.id && (
+								<Button
+									type='button'
+									variant='outline'
+									className='h-9 px-2'
+									disabled={member.role === RoleEnum.OWNER}
+									onClick={handleLeaveOrganization}
+								>
+									Deixar equipe
+								</Button>
+							)}
 						</td>
 					</tr>
 				))}
