@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { toast } from 'sonner'
-
+import z from 'zod'
 import { Button } from '@/components/button'
 import {
 	authClient,
@@ -11,7 +11,12 @@ import {
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import logo from '../../../assets/kanplan-logo.svg'
 
+const searchSchema = z.object({
+	slug: z.string(),
+})
+
 export const Route = createFileRoute('/invite/$invitationId/')({
+	validateSearch: search => searchSchema.parse(search),
 	beforeLoad: async ctx => {
 		const { data: session } = await getSession()
 
@@ -29,6 +34,7 @@ export const Route = createFileRoute('/invite/$invitationId/')({
 function Invite() {
 	const navigate = Route.useNavigate()
 	const { invitationId } = Route.useParams()
+	const { slug } = Route.useSearch()
 	const { session, invitation } = Route.useRouteContext()
 
 	const isInvitationForMe = invitation.data?.email === session?.user.email
@@ -37,7 +43,11 @@ function Invite() {
 		signOut({
 			fetchOptions: {
 				onSuccess() {
-					navigate({ to: '/invite/$invitationId', params: { invitationId } })
+					navigate({
+						to: '/invite/$invitationId',
+						params: { invitationId },
+						search: { slug },
+					})
 				},
 			},
 		})
@@ -51,6 +61,8 @@ function Invite() {
 					toast.error(getAuthErrorMessage(error.code))
 				},
 				onSuccess() {
+					toast.success('Convite rejeitado com sucesso')
+
 					navigate({ to: '/organizations', replace: true })
 				},
 			},
@@ -65,7 +77,11 @@ function Invite() {
 					toast.error(getAuthErrorMessage(error.code))
 				},
 				onSuccess() {
-					navigate({ to: '/organizations', replace: true })
+					navigate({
+						to: '/org/$orgSlug',
+						params: { orgSlug: slug },
+						replace: true,
+					})
 				},
 			},
 		})
