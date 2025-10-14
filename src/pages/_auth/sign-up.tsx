@@ -10,6 +10,11 @@ import { Button } from '../../components/button'
 import { Input } from '../../components/input'
 import { PasswordInput } from '../../components/password-input'
 
+const searchSchema = z.object({
+	redirectTo: z.string().optional(),
+	params: z.string().optional(),
+})
+
 export const Route = createFileRoute('/_auth/sign-up')({
 	component: SignUp,
 	head: () => ({
@@ -19,6 +24,7 @@ export const Route = createFileRoute('/_auth/sign-up')({
 			},
 		],
 	}),
+	validateSearch: search => searchSchema.parse(search),
 })
 
 const signUpSchema = z.object({
@@ -31,6 +37,8 @@ type SignUpFormType = z.infer<typeof signUpSchema>
 
 function SignUp() {
 	const navigate = Route.useNavigate()
+
+	const searchParams = Route.useSearch()
 
 	const {
 		register,
@@ -53,7 +61,17 @@ function SignUp() {
 				onError(ctx) {
 					toast.error(getAuthErrorMessage(ctx.error.code))
 				},
-				onSuccess: () => navigate({ to: '/organizations', replace: true }),
+				onSuccess: () => {
+					if (searchParams?.redirectTo?.includes('invite')) {
+						return navigate({
+							to: searchParams.redirectTo,
+							params: { invitationId: searchParams.params },
+							replace: true,
+						})
+					}
+
+					navigate({ to: '/organizations', replace: true })
+				},
 			},
 		})
 	}

@@ -10,6 +10,11 @@ import { authClient } from '@/lib/auth-client'
 import { cn } from '@/utils/cn'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 
+const searchSchema = z.object({
+	redirectTo: z.string().optional(),
+	params: z.string().optional(),
+})
+
 export const Route = createFileRoute('/_auth/sign-in')({
 	component: SignIn,
 	head: () => ({
@@ -19,6 +24,7 @@ export const Route = createFileRoute('/_auth/sign-in')({
 			},
 		],
 	}),
+	validateSearch: search => searchSchema.parse(search),
 })
 
 const signInSchema = z.object({
@@ -30,6 +36,8 @@ type SignInFormType = z.infer<typeof signInSchema>
 
 function SignIn() {
 	const navigate = Route.useNavigate()
+
+	const searchParams = Route.useSearch()
 
 	const {
 		register,
@@ -52,7 +60,17 @@ function SignIn() {
 				onError(ctx) {
 					toast.error(getAuthErrorMessage(ctx.error.code))
 				},
-				onSuccess: () => navigate({ to: '/organizations', replace: true }), // TODO: redirect to the org page
+				onSuccess: () => {
+					if (searchParams?.redirectTo?.includes('invite')) {
+						return navigate({
+							to: searchParams.redirectTo,
+							params: { invitationId: searchParams.params },
+							replace: true,
+						})
+					}
+
+					navigate({ to: '/organizations', replace: true })
+				}, // TODO: redirect to the org page
 			},
 		})
 	}

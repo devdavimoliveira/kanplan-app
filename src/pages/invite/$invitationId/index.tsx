@@ -23,8 +23,7 @@ function Invite() {
 	const { invitationId } = Route.useParams()
 	const { session, invitation } = Route.useRouteContext()
 
-	const isInvitationForMe =
-		invitation.data?.inviterEmail === session?.user.email
+	const isInvitationForMe = invitation.data?.email === session?.user.email
 
 	function handleSignOut() {
 		signOut({
@@ -49,10 +48,26 @@ function Invite() {
 							</p>
 							<div className='flex items-center justify-center gap-4'>
 								<Button variant='default' asChild className='px-2'>
-									<Link to='/sign-in'>Entrar</Link>
+									<Link
+										to='/sign-in'
+										search={{
+											redirectTo: '/invite/$invitationId',
+											params: invitationId,
+										}}
+									>
+										Entrar
+									</Link>
 								</Button>
 								<Button variant='default' asChild className='px-2'>
-									<Link to='/sign-up'>Criar conta</Link>
+									<Link
+										to='/sign-up'
+										search={{
+											redirectTo: '/invite/$invitationId',
+											params: invitationId,
+										}}
+									>
+										Criar conta
+									</Link>
 								</Button>
 							</div>
 						</>
