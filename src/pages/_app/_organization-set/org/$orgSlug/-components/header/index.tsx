@@ -19,6 +19,13 @@ export function OrganizationHeader() {
 				orgSlug: activeOrganization?.slug,
 			},
 		},
+		{
+			name: 'Configurações',
+			path: '/org/$orgSlug/settings',
+			params: {
+				orgSlug: activeOrganization?.slug,
+			},
+		},
 	]
 
 	return <Tabs tabs={tabs} />
