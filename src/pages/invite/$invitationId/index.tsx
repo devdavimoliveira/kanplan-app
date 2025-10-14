@@ -1,6 +1,14 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { toast } from 'sonner'
+
 import { Button } from '@/components/button'
-import { authClient, getSession, signOut } from '@/lib/auth-client'
+import {
+	authClient,
+	getSession,
+	organization,
+	signOut,
+} from '@/lib/auth-client'
+import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import logo from '../../../assets/kanplan-logo.svg'
 
 export const Route = createFileRoute('/invite/$invitationId/')({
@@ -30,6 +38,34 @@ function Invite() {
 			fetchOptions: {
 				onSuccess() {
 					navigate({ to: '/invite/$invitationId', params: { invitationId } })
+				},
+			},
+		})
+	}
+
+	async function handleDeclineInvitation() {
+		await organization.rejectInvitation({
+			invitationId,
+			fetchOptions: {
+				onError({ error }) {
+					toast.error(getAuthErrorMessage(error.code))
+				},
+				onSuccess() {
+					navigate({ to: '/organizations', replace: true })
+				},
+			},
+		})
+	}
+
+	async function handleAcceptInvitation() {
+		await organization.acceptInvitation({
+			invitationId,
+			fetchOptions: {
+				onError({ error }) {
+					toast.error(getAuthErrorMessage(error.code))
+				},
+				onSuccess() {
+					navigate({ to: '/organizations', replace: true })
 				},
 			},
 		})
@@ -80,10 +116,18 @@ function Invite() {
 								{invitation.data?.organizationName}
 							</p>
 							<div className='flex items-center justify-center gap-4'>
-								<Button variant='default' className='px-2'>
+								<Button
+									variant='default'
+									className='px-2'
+									onClick={handleDeclineInvitation}
+								>
 									Recusar
 								</Button>
-								<Button variant='default' className='px-2'>
+								<Button
+									variant='default'
+									className='px-2'
+									onClick={handleAcceptInvitation}
+								>
 									Aceitar convite
 								</Button>
 							</div>
