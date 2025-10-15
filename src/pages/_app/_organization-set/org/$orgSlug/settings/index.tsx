@@ -1,10 +1,32 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { toast } from 'sonner'
+import { organization } from '@/lib/auth-client'
+import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { OrganizationDangerZone } from './-components/organization-danger-zone'
 import { OrganizationDetailsForm } from './-components/organization-details-form'
 
 export const Route = createFileRoute(
 	'/_app/_organization-set/org/$orgSlug/settings/'
 )({
+	beforeLoad: async ({ params }) => {
+		const { data, error } = await organization.hasPermission({
+			permission: {
+				organization: ['update', 'delete'],
+			},
+		})
+
+		if (error || data?.success === false) {
+			if (error?.code) {
+				toast.error(getAuthErrorMessage(error.code))
+			}
+
+			throw redirect({
+				to: '/org/$orgSlug',
+				params: { orgSlug: params.orgSlug },
+				replace: true,
+			})
+		}
+	},
 	component: OrganizationSettings,
 })
 
