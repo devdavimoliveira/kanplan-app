@@ -8,6 +8,7 @@ export interface ITab {
 	name: string
 	path: Path
 	params?: RegisteredRouter['routesByPath'][Path]['types']['params']
+	hidden?: boolean
 }
 
 export type ITabs = ITab[]
@@ -20,7 +21,13 @@ export function Tabs({ tabs }: TabsProps) {
 	return (
 		<div className='flex h-10 items-center'>
 			{tabs.map(tab => (
-				<Tab key={tab.name} to={tab.path} name={tab.name} params={tab.params} />
+				<Tab
+					key={tab.name}
+					to={tab.path}
+					name={tab.name}
+					params={tab.params}
+					hidden={tab.hidden}
+				/>
 			))}
 		</div>
 	)

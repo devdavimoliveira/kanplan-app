@@ -1,8 +1,11 @@
+import { useCanUpdateAndDeleteOrganization } from '@/hooks/permissions/use-can-update-and-delete-organization'
 import { useActiveOrganization } from '@/lib/auth-client'
 import { type ITabs, Tabs } from './tabs'
 
 export function OrganizationHeader() {
 	const { data: activeOrganization } = useActiveOrganization()
+
+	const canUpdateAndDeleteOrganization = useCanUpdateAndDeleteOrganization()
 
 	const tabs: ITabs = [
 		{
@@ -25,6 +28,7 @@ export function OrganizationHeader() {
 			params: {
 				orgSlug: activeOrganization?.slug,
 			},
+			hidden: !canUpdateAndDeleteOrganization,
 		},
 	]
 
