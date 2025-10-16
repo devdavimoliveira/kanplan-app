@@ -8,35 +8,38 @@ import { NewBoardDialog } from './-components/new-board-dialog'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug/')({
 	beforeLoad: async ({ params }) => {
-		const { data: activeOrganization } = await organization.getFullOrganization(
-			{
+		const { data: activeOrganization, error: activeOrganizationError } =
+			await organization.getFullOrganization({
 				query: { organizationSlug: params.orgSlug, membersLimit: 0 },
-				fetchOptions: {
-					onError: ({ error }) => {
-						toast.error(
-							`Organização não existe ou ${getAuthErrorMessage(error.code).toLowerCase()}`
-						)
-						throw redirect({ to: '/organizations' })
-					},
-				},
-			}
-		)
-
-		if (activeOrganization) {
-			await organization.setActive({
-				organizationId: activeOrganization!.id,
 			})
+
+		if (activeOrganizationError) {
+			toast.error(getAuthErrorMessage(activeOrganizationError.code!))
+			throw redirect({ to: '/organizations' })
+		}
+
+		await organization.setActive({
+			organizationId: activeOrganization.id,
+		})
+
+		const { data: activeMember, error: activeMemberError } =
+			await organization.getActiveMember()
+
+		if (activeMemberError) {
+			toast.error(getAuthErrorMessage(activeMemberError.code!))
+			throw redirect({ to: '/organizations' })
 		}
 
 		return {
 			activeOrganization,
+			activeMember,
 		}
 	},
 	component: Organization,
 })
 
 function Organization() {
-	const { activeOrganization } = Route.useRouteContext()
+	const { activeOrganization, activeMember } = Route.useRouteContext()
 
 	return (
 		<div className='mx-auto flex max-w-5xl flex-col gap-8 py-8'>
@@ -45,9 +48,10 @@ function Organization() {
 			<NewBoardDialog
 				trigger={<Button className='h-8 w-fit px-2'>Novo quadro</Button>}
 				organization={activeOrganization!}
+				member={activeMember}
 			/>
 
-			<BoardsGrid organizationId={activeOrganization!.id} />
+			<BoardsGrid organizationId={activeOrganization.id} />
 		</div>
 	)
 }

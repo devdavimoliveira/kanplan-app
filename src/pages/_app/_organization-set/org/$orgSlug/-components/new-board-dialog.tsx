@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useMutation } from '@tanstack/react-query'
+import type { Member } from 'better-auth/plugins/organization'
 import { X } from 'lucide-react'
 import { type ReactNode, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -21,6 +22,7 @@ const newBoardSchema = z.object({
 	name: z.string().nonempty('Insira um nome'),
 	highlightColor: z.string().default(DEFAULT_COLOR),
 	organizationId: z.string(),
+	memberId: z.string(),
 })
 
 type NewBoardFormType = z.infer<typeof newBoardSchema>
@@ -28,9 +30,14 @@ type NewBoardFormType = z.infer<typeof newBoardSchema>
 interface NewBoardDialogProps {
 	trigger: ReactNode
 	organization: Organization
+	member: Member
 }
 
-export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
+export function NewBoardDialog({
+	trigger,
+	organization,
+	member,
+}: NewBoardDialogProps) {
 	const [open, setOpen] = useState(false)
 
 	const {
@@ -45,6 +52,7 @@ export function NewBoardDialog({ trigger, organization }: NewBoardDialogProps) {
 			name: '',
 			highlightColor: DEFAULT_COLOR,
 			organizationId: organization.id,
+			memberId: member.id,
 		},
 	})
 
