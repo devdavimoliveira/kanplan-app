@@ -1,5 +1,5 @@
 import { TriangleAlert } from 'lucide-react'
-import { Button } from '@/components/button'
+import { DeleteOrganizationDialog } from './delete-organization-dialog'
 
 export function OrganizationDangerZone() {
 	return (
@@ -12,9 +12,7 @@ export function OrganizationDangerZone() {
 				Remove permanentemente toda sua equipe e projetos da plataforma do
 				Kanplan. Esta ação não pode ser desfeita - continue com cautela.
 			</p>
-			<Button className='self-start px-2' variant='warning'>
-				Deletar organização
-			</Button>
+			<DeleteOrganizationDialog />
 		</div>
 	)
 }
