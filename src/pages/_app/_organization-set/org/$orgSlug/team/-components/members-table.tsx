@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
+import { Tooltip } from '@/components/tooltip'
 import {
 	organization,
 	useActiveOrganization,
@@ -73,15 +74,21 @@ export function MembersTable() {
 						</td>
 						<td className='p-4 text-right'>
 							{session?.user.id === member.user.id && (
-								<Button
-									type='button'
-									variant='outline'
-									className='h-9 px-2'
-									disabled={member.role === RoleEnum.OWNER}
-									onClick={handleLeaveOrganization}
+								<Tooltip
+									side='bottom'
+									content='Você não pode sair da organização pois é o único proprietário'
+									disabled={!(member.role === RoleEnum.OWNER)}
 								>
-									Deixar equipe
-								</Button>
+									<Button
+										type='button'
+										variant='outline'
+										className='h-9 px-2'
+										disabled={member.role === RoleEnum.OWNER}
+										onClick={handleLeaveOrganization}
+									>
+										Deixar equipe
+									</Button>
+								</Tooltip>
 							)}
 						</td>
 					</tr>
