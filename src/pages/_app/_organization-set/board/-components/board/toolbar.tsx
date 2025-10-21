@@ -1,11 +1,10 @@
 import { Link, useMatchRoute } from '@tanstack/react-router'
-import { Plus } from 'lucide-react'
-import { Button } from '@/components/button'
-import type { Board } from '@/types/Board'
+import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import { cn } from '@/utils/cn'
+import { NewColumnButton } from './new-column-button'
 
 interface BoardToolbarProps {
-	board: Board
+	board: BoardWithColumnsAndTasks
 }
 
 export function BoardToolbar({ board }: BoardToolbarProps) {
@@ -27,11 +26,7 @@ export function BoardToolbar({ board }: BoardToolbarProps) {
 					Visualização
 				</div>
 			</Link>
-
-			<Button className='px-2'>
-				<Plus className='mr-2 size-4.5' />
-				Nova coluna
-			</Button>
+			<NewColumnButton board={board} />
 		</div>
 	)
 }
