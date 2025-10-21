@@ -14,6 +14,7 @@ import { moveTaskMutationOptions } from '@/mutations/tasks-mutations'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import { BoardCard } from './card'
 import { BoardColumn } from './column'
+import { BoardToolbar } from './toolbar'
 
 interface BoardProps {
 	data: BoardWithColumnsAndTasks
@@ -156,25 +157,29 @@ export function Board({ data }: BoardProps) {
 	}
 
 	return (
-		<div className='flex gap-4'>
-			<DndContext
-				sensors={sensors}
-				onDragMove={handleDragMove}
-				onDragEnd={handleDragEnd}
-			>
-				{board.columns.map(column => (
-					<SortableContext
-						key={column.id}
-						items={column.tasks.map(task => task.id)}
-					>
-						<BoardColumn column={column} highlightColor={data.highlightColor}>
-							{column.tasks.map(task => (
-								<BoardCard key={task.id} task={task} />
-							))}
-						</BoardColumn>
-					</SortableContext>
-				))}
-			</DndContext>
+		<div className='flex flex-col gap-4'>
+			<h1 className='font-bold text-2xl'>{board.name}</h1>
+			<BoardToolbar board={board} />
+			<div className='flex gap-4'>
+				<DndContext
+					sensors={sensors}
+					onDragMove={handleDragMove}
+					onDragEnd={handleDragEnd}
+				>
+					{board.columns.map(column => (
+						<SortableContext
+							key={column.id}
+							items={column.tasks.map(task => task.id)}
+						>
+							<BoardColumn column={column} highlightColor={data.highlightColor}>
+								{column.tasks.map(task => (
+									<BoardCard key={task.id} task={task} />
+								))}
+							</BoardColumn>
+						</SortableContext>
+					))}
+				</DndContext>
+			</div>
 		</div>
 	)
 }
