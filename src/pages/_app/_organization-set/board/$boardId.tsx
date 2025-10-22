@@ -13,7 +13,7 @@ function Board() {
 	const { data, isLoading } = useQuery(boardByIdQueryOptions({ boardId }))
 
 	return (
-		<div className='mx-auto max-w-5xl py-8'>
+		<div className='mx-auto h-[calc(100%-var(--header-height))] max-w-7xl py-4'>
 			{isLoading ? (
 				<p>carregando...</p>
 			) : !data ? (
