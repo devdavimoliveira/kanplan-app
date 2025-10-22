@@ -24,7 +24,7 @@ export function BoardCard({ task }: BoardCardProps) {
 	}
 
 	return (
-		<div
+		<li
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
@@ -42,6 +42,6 @@ export function BoardCard({ task }: BoardCardProps) {
 					fallback='Av'
 				/>
 			</div>
-		</div>
+		</li>
 	)
 }

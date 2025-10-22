@@ -12,7 +12,6 @@ import { /* arrayMove ,*/ SortableContext } from '@dnd-kit/sortable'
 // import { useImmer } from 'use-immer'
 // import { moveTaskMutationOptions } from '@/mutations/tasks-mutations'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
-import { BoardCard } from './card'
 import { BoardColumn } from './column'
 import { BoardToolbar } from './toolbar'
 
@@ -168,11 +167,10 @@ export function Board({ data }: BoardProps) {
 							key={column.id}
 							items={column.tasks.map(task => task.id)}
 						>
-							<BoardColumn column={column} highlightColor={data.highlightColor}>
-								{column.tasks.map(task => (
-									<BoardCard key={task.id} task={task} />
-								))}
-							</BoardColumn>
+							<BoardColumn
+								column={column}
+								highlightColor={data.highlightColor}
+							/>
 						</SortableContext>
 					))}
 				</DndContext>

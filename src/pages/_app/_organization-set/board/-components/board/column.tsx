@@ -1,21 +1,16 @@
 import { useDroppable } from '@dnd-kit/core'
 import { EllipsisVertical, Plus } from 'lucide-react'
-import type { ReactNode } from 'react'
 import colors from 'tailwindcss/colors'
-import type { Column } from '@/types/Column'
+import type { ColumnWithTasks } from '@/types/Column'
 import { cn } from '@/utils/cn'
+import { BoardCard } from './card'
 
 interface BoardColumnProps {
-	column: Column
+	column: ColumnWithTasks
 	highlightColor: string
-	children: ReactNode
 }
 
-export function BoardColumn({
-	column,
-	highlightColor,
-	children,
-}: BoardColumnProps) {
+export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 	const { setNodeRef } = useDroppable({
 		id: column.id,
 		data: { type: 'column' },
@@ -44,7 +39,11 @@ export function BoardColumn({
 					</button>
 				</div>
 			</div>
-			<div className='flex flex-col gap-4'>{children}</div>
+			<ul className='flex flex-col gap-4'>
+				{column.tasks.map(task => (
+					<BoardCard key={task.id} task={task} />
+				))}
+			</ul>
 		</div>
 	)
 }
