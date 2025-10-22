@@ -8,6 +8,7 @@
   --shadow-card:
     rgba(0, 0, 0, 0.15) 0px 0px 0px 1px,
     rgba(82, 82, 91, 0.3) 0px 0px 0px 1px inset;
+  --header-height: calc(var(--spacing) * 14);
 }
 
 html {
