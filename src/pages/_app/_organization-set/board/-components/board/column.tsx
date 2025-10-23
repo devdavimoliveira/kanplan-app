@@ -1,9 +1,12 @@
 import { useDroppable } from '@dnd-kit/core'
 import { EllipsisVertical, Plus } from 'lucide-react'
+import { useState } from 'react'
 import colors from 'tailwindcss/colors'
+import { Button } from '@/components/button'
 import type { ColumnWithTasks } from '@/types/Column'
 import { cn } from '@/utils/cn'
 import { BoardCard } from './card'
+import { CreateCardForm } from './create-card-form'
 
 interface BoardColumnProps {
 	column: ColumnWithTasks
@@ -11,6 +14,8 @@ interface BoardColumnProps {
 }
 
 export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
+	const [isCreatingCard, setIsCreatingCard] = useState(false)
+
 	const { setNodeRef } = useDroppable({
 		id: column.id,
 		data: { type: 'column' },
@@ -43,7 +48,25 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 				{column.tasks.map(task => (
 					<BoardCard key={task.id} task={task} />
 				))}
+				{isCreatingCard && (
+					<li>
+						<CreateCardForm
+							column={column}
+							onClose={() => setIsCreatingCard(false)}
+						/>
+					</li>
+				)}
 			</ul>
+			{!isCreatingCard && (
+				<Button
+					variant='ghost'
+					type='button'
+					onClick={() => setIsCreatingCard(true)}
+				>
+					<Plus size={20} className='mr-2' />
+					Adicionar um cartão
+				</Button>
+			)}
 		</div>
 	)
 }
