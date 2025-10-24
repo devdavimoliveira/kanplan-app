@@ -1,9 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useParams } from '@tanstack/react-router'
+import { produce } from 'immer'
 import { X } from 'lucide-react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import z from 'zod'
 import { Button } from '@/components/button'
+import { createTaskMutationOptions } from '@/mutations/tasks-mutations'
+import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import type { ColumnWithTasks } from '@/types/Column'
 
 interface CreateCardFormProps {
@@ -14,12 +20,18 @@ interface CreateCardFormProps {
 const createCardSchema = z.object({
 	description: z.string(),
 	position: z.number().positive(),
-	boardId: z.uuid(),
+	columnId: z.uuid(),
 })
 
 type CreateCardFormType = z.infer<typeof createCardSchema>
 
 export function CreateCardForm({ column, onClose }: CreateCardFormProps) {
+	const queryClient = useQueryClient()
+
+	const { boardId } = useParams({
+		from: '/_app/_organization-set/board/$boardId',
+	})
+
 	const {
 		register,
 		handleSubmit,
@@ -30,9 +42,51 @@ export function CreateCardForm({ column, onClose }: CreateCardFormProps) {
 		values: {
 			description: '',
 			position: column.tasks.length + 1,
-			boardId: column.boardId,
+			columnId: column.id,
 		},
 	})
+
+	const { mutate } = useMutation(
+		createTaskMutationOptions({
+			onMutate: async ({ description, position, columnId }) => {
+				await queryClient.cancelQueries({ queryKey: ['board', boardId] })
+
+				const prevBoard = queryClient.getQueryData<BoardWithColumnsAndTasks>([
+					'board',
+					boardId,
+				])
+
+				queryClient.setQueryData(
+					['board', boardId],
+					(old: BoardWithColumnsAndTasks) => {
+						const columnIndex = old.columns.findIndex(
+							column => column.id === columnId
+						)
+
+						return produce(old, draft => {
+							draft.columns[columnIndex].tasks.push({
+								id: Date.now().toString(),
+								description,
+								position,
+								columnId,
+								createdAt: Date.now().toString(),
+							})
+						})
+					}
+				)
+
+				return { prevBoard }
+			},
+			onError: (_, __, context) => {
+				if (context?.prevBoard) {
+					queryClient.setQueryData(['board', boardId], context.prevBoard)
+				}
+			},
+			onSettled: () => {
+				queryClient.invalidateQueries({ queryKey: ['board', boardId] })
+			},
+		})
+	)
 
 	function handleCreateCard(data: CreateCardFormType) {
 		if (data.description.length === 0) {
@@ -40,7 +94,21 @@ export function CreateCardForm({ column, onClose }: CreateCardFormProps) {
 			return
 		}
 
-		console.log('Data', data)
+		mutate(
+			{
+				description: data.description,
+				position: data.position,
+				columnId: data.columnId,
+			},
+			{
+				onError: () => {
+					toast.error('Ocorreu um erro ao criar o cartão')
+				},
+				onSettled: () => {
+					onClose()
+				},
+			}
+		)
 	}
 
 	useEffect(() => {
