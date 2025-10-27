@@ -153,10 +153,10 @@ export function Board({ data }: BoardProps) {
 	// }
 
 	return (
-		<div className='flex flex-col gap-4'>
+		<div className='flex h-full flex-col gap-4'>
 			<h1 className='font-bold text-2xl'>{data.name}</h1>
 			<BoardToolbar board={data} />
-			<div className='flex gap-4'>
+			<div className='flex gap-4 overflow-auto'>
 				<DndContext
 					sensors={sensors}
 					// onDragMove={handleDragMove}

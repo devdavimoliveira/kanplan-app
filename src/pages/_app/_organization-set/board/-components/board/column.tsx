@@ -27,7 +27,7 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 		<div
 			ref={setNodeRef}
 			className={cn(
-				'flex w-75 flex-col gap-2 rounded border-t-5 bg-zinc-900 p-4'
+				'flex h-max w-75 shrink-0 flex-col gap-2 rounded border-t-5 bg-zinc-900 p-4'
 			)}
 			style={{ borderColor }}
 		>
