@@ -21,13 +21,15 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 		data: { type: 'column' },
 	})
 
+	const borderColor = highlightColor ?? colors.cyan[600]
+
 	return (
 		<div
 			ref={setNodeRef}
 			className={cn(
 				'flex w-75 flex-col gap-2 rounded border-t-5 bg-zinc-900 p-4'
 			)}
-			style={{ borderColor: highlightColor ?? colors.cyan[600] }}
+			style={{ borderColor }}
 		>
 			<div className='flex items-center justify-between'>
 				<h2 className='font-bold text-xl'>{column.title}</h2>
@@ -42,7 +44,11 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 			</div>
 			<ul className='flex flex-col gap-4'>
 				{column.tasks.map(task => (
-					<BoardCard key={task.id} task={task} />
+					<BoardCard
+						key={task.id}
+						task={task}
+						boardHighlightColor={borderColor}
+					/>
 				))}
 				{isCreatingCard && (
 					<li>
