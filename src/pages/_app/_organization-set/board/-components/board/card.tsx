@@ -5,6 +5,7 @@ import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
 import { cn } from '@/utils/cn'
+import { CardMenu } from './card-menu'
 
 interface BoardCardProps {
 	task: Task
@@ -42,14 +43,16 @@ export function BoardCard({ task, boardHighlightColor }: BoardCardProps) {
 					style={{ backgroundColor: boardHighlightColor }}
 				/>
 				<div className='flex gap-2'>
-					<Button
-						variant='ghost'
-						type='button'
-						title='Opções do cartão'
-						className='h-auto'
-					>
-						<Bolt size={18} />
-					</Button>
+					<CardMenu>
+						<Button
+							variant='ghost'
+							type='button'
+							title='Opções do cartão'
+							className='h-auto'
+						>
+							<Bolt size={18} />
+						</Button>
+					</CardMenu>
 					<Button
 						variant='ghost'
 						type='button'
