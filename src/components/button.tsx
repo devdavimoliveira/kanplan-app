@@ -17,6 +17,7 @@ const buttonVariants = cva(
 				link: 'text-cyan-600 not-disabled:hover:underline underline-offset-2',
 				warning:
 					'bg-red-500 not-disabled:hover:bg-red-500/80 focus-visible:outline-red-500',
+				raw: 'bg-transparent h-auto not-disabled:hover:bg-transparent focus-visible:outline-none focus-visible:outline-offset-0',
 			},
 			active: {
 				true: null,
