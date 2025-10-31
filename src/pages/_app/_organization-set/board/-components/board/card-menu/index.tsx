@@ -2,12 +2,15 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { MoveRight, PenTool, Trash2, Users } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Button } from '@/components/button'
+import type { Task } from '@/types/Task'
+import { RemoveCardDialog } from './remove-card-dialog'
 
 interface CardMenuProps {
+	task: Task
 	children: ReactNode
 }
 
-export function CardMenu({ children }: CardMenuProps) {
+export function CardMenu({ task, children }: CardMenuProps) {
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>{children}</DropdownMenu.Trigger>
@@ -48,14 +51,16 @@ export function CardMenu({ children }: CardMenuProps) {
 						</Button>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
-						<Button
-							type='button'
-							variant='raw'
-							className='justify-start gap-2 p-1'
-						>
-							<Trash2 size={18} />
-							Remover
-						</Button>
+						<RemoveCardDialog taskId={task.id}>
+							<Button
+								type='button'
+								variant='raw'
+								className='justify-start gap-2 p-1'
+							>
+								<Trash2 size={18} />
+								Remover
+							</Button>
+						</RemoveCardDialog>
 					</DropdownMenu.Item>
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>

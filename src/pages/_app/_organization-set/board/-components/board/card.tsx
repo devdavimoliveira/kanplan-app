@@ -43,7 +43,7 @@ export function BoardCard({ task, boardHighlightColor }: BoardCardProps) {
 					style={{ backgroundColor: boardHighlightColor }}
 				/>
 				<div className='flex gap-2'>
-					<CardMenu>
+					<CardMenu task={task}>
 						<Button
 							variant='ghost'
 							type='button'
