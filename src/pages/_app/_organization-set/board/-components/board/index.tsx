@@ -8,19 +8,22 @@ import {
 	useSensors,
 } from '@dnd-kit/core'
 import { /* arrayMove ,*/ SortableContext } from '@dnd-kit/sortable'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { boardByIdQueryOptions } from '@/queries/boards-queries'
 // import { useMutation, useQueryClient } from '@tanstack/react-query'
 // import { useImmer } from 'use-immer'
 // import { moveTaskMutationOptions } from '@/mutations/tasks-mutations'
-import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import { BoardColumn } from './column'
 import { BoardToolbar } from './toolbar'
 
 interface BoardProps {
-	data: BoardWithColumnsAndTasks
+	boardId: string
 }
 
-export function Board({ data }: BoardProps) {
+export function Board({ boardId }: BoardProps) {
 	const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor))
+
+	const { data } = useSuspenseQuery(boardByIdQueryOptions({ boardId }))
 
 	// const { mutate } = useMutation(
 	// 	moveTaskMutationOptions({
@@ -153,28 +156,34 @@ export function Board({ data }: BoardProps) {
 	// }
 
 	return (
-		<div className='flex h-full flex-col gap-4'>
-			<h1 className='font-bold text-2xl'>{data.name}</h1>
-			<BoardToolbar board={data} />
-			<div className='pretty-scrollbar flex gap-4 overflow-auto'>
-				<DndContext
-					sensors={sensors}
-					// onDragMove={handleDragMove}
-					// onDragEnd={handleDragEnd}
-				>
-					{data.columns.map(column => (
-						<SortableContext
-							key={column.id}
-							items={column.tasks.map(task => task.id)}
+		<>
+			{!data ? (
+				<p>Esse quadro nao existe</p>
+			) : (
+				<div className='flex h-full flex-col gap-4'>
+					<h1 className='font-bold text-2xl'>{data.name}</h1>
+					<BoardToolbar board={data} />
+					<div className='pretty-scrollbar flex gap-4 overflow-auto'>
+						<DndContext
+							sensors={sensors}
+							// onDragMove={handleDragMove}
+							// onDragEnd={handleDragEnd}
 						>
-							<BoardColumn
-								column={column}
-								highlightColor={data.highlightColor}
-							/>
-						</SortableContext>
-					))}
-				</DndContext>
-			</div>
-		</div>
+							{data.columns.map(column => (
+								<SortableContext
+									key={column.id}
+									items={column.tasks.map(task => task.id)}
+								>
+									<BoardColumn
+										column={column}
+										highlightColor={data.highlightColor}
+									/>
+								</SortableContext>
+							))}
+						</DndContext>
+					</div>
+				</div>
+			)}
+		</>
 	)
 }
