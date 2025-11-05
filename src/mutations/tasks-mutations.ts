@@ -2,6 +2,11 @@ import { type MutationOptions, mutationOptions } from '@tanstack/react-query'
 import { type CreateTaskBody, createTask } from '@/api/tasks/create-task'
 import { type MoveTaskBody, moveTask } from '@/api/tasks/move-task'
 import { type RemoveTaskParams, removeTask } from '@/api/tasks/remove-task'
+import {
+	type UpdateTaskBody,
+	type UpdateTaskParams,
+	updateTask,
+} from '@/api/tasks/update-task'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
 
 export const moveTaskMutationOptions = (
@@ -16,7 +21,7 @@ export const moveTaskMutationOptions = (
 	>
 ) =>
 	mutationOptions({
-		mutationFn: (body: MoveTaskBody) => moveTask(body),
+		mutationFn: body => moveTask(body),
 		...options,
 	})
 
@@ -32,7 +37,7 @@ export const createTaskMutationOptions = (
 	>
 ) =>
 	mutationOptions({
-		mutationFn: (body: CreateTaskBody) => createTask(body),
+		mutationFn: body => createTask(body),
 		...options,
 	})
 
@@ -48,6 +53,22 @@ export const removeTaskMutationOptions = (
 	>
 ) =>
 	mutationOptions({
-		mutationFn: (params: RemoveTaskParams) => removeTask(params),
+		mutationFn: params => removeTask(params),
+		...options,
+	})
+
+export const updateTaskMutationOptions = (
+	options?: Omit<
+		MutationOptions<
+			unknown,
+			Error,
+			{ params: UpdateTaskParams; body: UpdateTaskBody },
+			{ prevBoard?: BoardWithColumnsAndTasks }
+		>,
+		'mutationFn'
+	>
+) =>
+	mutationOptions({
+		mutationFn: ({ params, body }) => updateTask(params, body),
 		...options,
 	})
