@@ -1,13 +1,11 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from '@tanstack/react-router'
-import { produce } from 'immer'
 import { X } from 'lucide-react'
 import { type ReactNode, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/button'
 import { removeTaskMutationOptions } from '@/mutations/tasks-mutations'
-import type { BoardWithColumnsAndTasks } from '@/types/Board'
 
 interface RemoveCardDialogProps {
 	taskId: string
@@ -23,41 +21,9 @@ export function RemoveCardDialog({ taskId, children }: RemoveCardDialogProps) {
 		from: '/_app/_organization-set/board/$boardId',
 	})
 
-	const { mutate } = useMutation(
+	const { mutate, isPending } = useMutation(
 		removeTaskMutationOptions({
-			onMutate: async ({ taskId }) => {
-				await queryClient.cancelQueries({ queryKey: ['board', boardId] })
-
-				const prevBoard = queryClient.getQueryData<BoardWithColumnsAndTasks>([
-					'board',
-					boardId,
-				])
-
-				queryClient.setQueryData(
-					['board', boardId],
-					(old: BoardWithColumnsAndTasks) => {
-						const columnIndex = old.columns.findIndex(column =>
-							column.tasks.some(task => task.id === taskId)
-						)
-
-						const taskIndex = old.columns[columnIndex].tasks.findIndex(
-							task => task.id === taskId
-						)
-
-						return produce(old, draft => {
-							draft.columns[columnIndex].tasks.splice(taskIndex, 1)
-						})
-					}
-				)
-
-				return { prevBoard }
-			},
-			onError: (_, __, context) => {
-				if (context?.prevBoard) {
-					queryClient.setQueryData(['board', boardId], context.prevBoard)
-				}
-			},
-			onSettled: () => {
+			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['board', boardId] })
 			},
 		})
@@ -93,17 +59,31 @@ export function RemoveCardDialog({ taskId, children }: RemoveCardDialogProps) {
 
 					<div className='flex justify-end gap-4 p-4'>
 						<Dialog.Close asChild>
-							<Button type='button' variant='warning' className='w-16'>
+							<Button
+								type='button'
+								variant='warning'
+								className='w-16 disabled:cursor-wait'
+								disabled={isPending}
+							>
 								Não
 							</Button>
 						</Dialog.Close>
-						<Button type='submit' className='px-2' onClick={handleRemoveCard}>
+						<Button
+							type='submit'
+							className='px-2 disabled:cursor-wait'
+							onClick={handleRemoveCard}
+							disabled={isPending}
+						>
 							Sim, remover
 						</Button>
 					</div>
 
 					<Dialog.Close asChild>
-						<Button variant='raw' className='absolute top-2 right-1.5 p-0.5'>
+						<Button
+							variant='raw'
+							className='absolute top-2 right-1.5 p-0.5'
+							disabled={isPending}
+						>
 							<X size={24} />
 						</Button>
 					</Dialog.Close>
