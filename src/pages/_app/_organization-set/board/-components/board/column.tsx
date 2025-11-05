@@ -1,7 +1,6 @@
 import { useDroppable } from '@dnd-kit/core'
 import { EllipsisVertical, Plus } from 'lucide-react'
 import { useState } from 'react'
-import colors from 'tailwindcss/colors'
 import { Button } from '@/components/button'
 import type { ColumnWithTasks } from '@/types/Column'
 import { cn } from '@/utils/cn'
@@ -21,15 +20,13 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 		data: { type: 'column' },
 	})
 
-	const borderColor = highlightColor ?? colors.cyan[600]
-
 	return (
 		<div
 			ref={setNodeRef}
 			className={cn(
 				'flex h-max w-75 shrink-0 flex-col gap-2 rounded border-t-5 bg-zinc-900 p-4'
 			)}
-			style={{ borderColor }}
+			style={{ borderColor: highlightColor }}
 		>
 			<div className='flex items-center justify-between'>
 				<h2 className='font-bold text-xl'>{column.title}</h2>
@@ -47,7 +44,7 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 					<BoardCard
 						key={task.id}
 						task={task}
-						boardHighlightColor={borderColor}
+						boardHighlightColor={highlightColor}
 					/>
 				))}
 				{isCreatingCard && (

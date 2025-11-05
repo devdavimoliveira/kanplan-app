@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Bolt, GripVertical } from 'lucide-react'
+import { GripVertical } from 'lucide-react'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
@@ -40,19 +40,10 @@ export function BoardCard({ task, boardHighlightColor }: BoardCardProps) {
 			<div className='flex items-center justify-between'>
 				<div
 					className='h-2 w-14 rounded-full'
-					style={{ backgroundColor: boardHighlightColor }}
+					style={{ backgroundColor: task.markingColor ?? boardHighlightColor }}
 				/>
 				<div className='flex gap-2'>
-					<CardMenu task={task}>
-						<Button
-							variant='ghost'
-							type='button'
-							title='Opções do cartão'
-							className='h-auto'
-						>
-							<Bolt size={18} />
-						</Button>
-					</CardMenu>
+					<CardMenu task={task} boardHighlightColor={boardHighlightColor} />
 					<Button
 						variant='ghost'
 						type='button'
