@@ -1,14 +1,14 @@
-import { api } from "@/lib/axios";
-import type { Board } from "@/types/Board";
+import { api } from '@/lib/axios'
+import type { Board } from '@/types/Board'
 
 export async function getBoardsByOrganizationId({
-  organizationId,
+	organizationId,
 }: {
-  organizationId: string;
+	organizationId: string
 }) {
-  const { data } = await api.get<Board[]>(
-    `/boards/organization/${organizationId}`
-  );
+	const { data } = await api.get<Board[]>(
+		`/boards/organization/${organizationId}`
+	)
 
-  return data;
+	return data
 }

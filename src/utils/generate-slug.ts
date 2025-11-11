@@ -1,10 +1,10 @@
-import { customAlphabet } from "nanoid";
+import { customAlphabet } from 'nanoid'
 
 export function generateSlug() {
-  const alphabet =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	const alphabet =
+		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 
-  const nanoid = customAlphabet(alphabet);
+	const nanoid = customAlphabet(alphabet)
 
-  return nanoid();
+	return nanoid()
 }

@@ -3,34 +3,34 @@
 @import "tailwindcss";
 
 @plugin 'tailwind-scrollbar' {
-  nocompatible: true;
-  preferredStrategy: 'pseudoelements';
+	nocompatible: true;
+	preferredStrategy: "pseudoelements";
 }
 
 @theme {
-  --breakpoint-xs: 30rem;
-  --font-geist: "Geist", sans-serif;
-  --shadow-card:
-    rgba(0, 0, 0, 0.15) 0px 0px 0px 1px,
-    rgba(82, 82, 91, 0.3) 0px 0px 0px 1px inset;
-  --header-height: calc(var(--spacing) * 14);
+	--breakpoint-xs: 30rem;
+	--font-geist: "Geist", sans-serif;
+	--shadow-card:
+		rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(82, 82, 91, 0.3) 0px 0px 0px 1px
+		inset;
+	--header-height: calc(var(--spacing) * 14);
 }
 
 @utility pretty-scrollbar {
-  @apply scrollbar-thin scrollbar-thumb-cyan-600 scrollbar-track-zinc-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full;
+	@apply scrollbar-thin scrollbar-thumb-cyan-600 scrollbar-track-zinc-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full;
 }
 
 html {
-  font-family: var(--font-geist);
-  font-synthesis: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: var(--font-geist);
+	font-synthesis: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  line-height: 1.5;
-  font-weight: 400;
+	line-height: 1.5;
+	font-weight: 400;
 
-  color: oklch(0.985 0 0);
-  background-color: oklch(0.141 0.005 285.823);
+	color: oklch(0.985 0 0);
+	background-color: oklch(0.141 0.005 285.823);
 }

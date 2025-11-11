@@ -1,14 +1,14 @@
-import { api } from "@/lib/axios";
-import type { BoardWithColumnsAndTasks } from "@/types/Board";
+import { api } from '@/lib/axios'
+import type { BoardWithColumnsAndTasks } from '@/types/Board'
 
 export async function getBoardWithDetailsById({
-  boardId,
+	boardId,
 }: {
-  boardId: string;
+	boardId: string
 }) {
-  const { data } = await api.get<BoardWithColumnsAndTasks>(
-    `/boards/${boardId}/details`
-  );
+	const { data } = await api.get<BoardWithColumnsAndTasks>(
+		`/boards/${boardId}/details`
+	)
 
-  return data;
+	return data
 }
