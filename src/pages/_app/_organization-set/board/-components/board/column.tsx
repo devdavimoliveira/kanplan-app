@@ -51,6 +51,7 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 					<li>
 						<CreateCardForm
 							column={column}
+							boardHighlightColor={highlightColor}
 							onClose={() => setIsCreatingCard(false)}
 						/>
 					</li>

@@ -14,6 +14,7 @@ import type { ColumnWithTasks } from '@/types/Column'
 
 interface CreateCardFormProps {
 	column: ColumnWithTasks
+	boardHighlightColor: string
 	onClose: () => void
 }
 
@@ -25,7 +26,11 @@ const createCardSchema = z.object({
 
 type CreateCardFormType = z.infer<typeof createCardSchema>
 
-export function CreateCardForm({ column, onClose }: CreateCardFormProps) {
+export function CreateCardForm({
+	column,
+	boardHighlightColor,
+	onClose,
+}: CreateCardFormProps) {
 	const queryClient = useQueryClient()
 
 	const { boardId } = useParams({
@@ -69,6 +74,7 @@ export function CreateCardForm({ column, onClose }: CreateCardFormProps) {
 								description,
 								position,
 								columnId,
+								markingColor: boardHighlightColor,
 								createdAt: Date.now().toString(),
 							})
 						})
