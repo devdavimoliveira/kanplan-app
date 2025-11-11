@@ -37,7 +37,7 @@ export function ColorPicker({
 					color={color}
 					onChange={onChange}
 					prefixed
-					className='mt-4 h-8 w-[12.5rem] rounded-lg bg-zinc-800 px-2 text-right focus-visible:outline-2 focus-visible:outline-cyan-600'
+					className='mt-4 h-8 w-50 rounded-lg bg-zinc-800 px-2 text-right focus-visible:outline-2 focus-visible:outline-cyan-600'
 				/>
 			</Popover.Content>
 		</Popover.Root>

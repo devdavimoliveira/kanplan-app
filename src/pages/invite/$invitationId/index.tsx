@@ -90,7 +90,7 @@ function Invite() {
 	return (
 		<div className='flex h-dvh items-center justify-center'>
 			<div className='flex w-full max-w-lg flex-col gap-4 px-4'>
-				<img src={logo} alt='Kanplan Logo' className='mx-auto w-[240px]' />
+				<img src={logo} alt='Kanplan Logo' className='mx-auto w-60' />
 
 				<div className='flex flex-col gap-4 rounded-lg bg-zinc-900 p-4 shadow-card'>
 					{!session ? (
