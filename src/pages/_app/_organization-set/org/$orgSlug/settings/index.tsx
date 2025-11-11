@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { organization } from '@/lib/auth-client'
+import { organization } from '@/lib/auth/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { OrganizationDangerZone } from './-components/organization-danger-zone'
 import { OrganizationDetailsForm } from './-components/organization-details-form'

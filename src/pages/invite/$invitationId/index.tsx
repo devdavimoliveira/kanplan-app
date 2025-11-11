@@ -7,7 +7,7 @@ import {
 	getSession,
 	organization,
 	signOut,
-} from '@/lib/auth-client'
+} from '@/lib/auth/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import logo from '../../../assets/kanplan-logo.svg'
 

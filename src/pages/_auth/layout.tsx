@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { getSession } from '@/lib/auth-client'
+import { getSession } from '@/lib/auth/auth-client'
 import Divider from './-components/divider'
 import { SocialLogin } from './-components/social-login'
 import Welcome from './-components/welcome'

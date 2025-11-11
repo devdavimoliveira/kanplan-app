@@ -1,5 +1,5 @@
 import { createFileRoute, Navigate, redirect } from '@tanstack/react-router'
-import { organization } from '@/lib/auth-client'
+import { organization } from '@/lib/auth/auth-client'
 
 export const Route = createFileRoute('/_app/_organization-set/')({
 	beforeLoad: async () => {

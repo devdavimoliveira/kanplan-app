@@ -1,5 +1,5 @@
 import { useCanUpdateAndDeleteOrganization } from '@/hooks/permissions/use-can-update-and-delete-organization'
-import { useActiveOrganization } from '@/lib/auth-client'
+import { useActiveOrganization } from '@/lib/auth/auth-client'
 import { type ITabs, Tabs } from './tabs'
 
 export function OrganizationHeader() {

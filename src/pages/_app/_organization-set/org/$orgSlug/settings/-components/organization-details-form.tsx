@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import z from 'zod'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { organization, useActiveOrganization } from '@/lib/auth-client'
+import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 
 const organizationDetailsSchema = z.object({

@@ -4,7 +4,7 @@ import { CircleUserRound, LayoutDashboard, LogOut } from 'lucide-react'
 import kanplanSymbol from '@/assets/kanplan-symbol.svg'
 import { Avatar } from '@/components/avatar'
 import { AvatarSkeleton } from '@/components/avatar-skeleton'
-import { signOut, useSession } from '@/lib/auth-client'
+import { signOut, useSession } from '@/lib/auth/auth-client'
 import { DropdownMenuItem } from './item'
 
 export function DropdownMenu() {

@@ -1,7 +1,7 @@
 import { Link, useMatchRoute } from '@tanstack/react-router'
 import { Building, Slash } from 'lucide-react'
 import kanplanSymbol from '@/assets/kanplan-symbol.svg'
-import { useActiveOrganization } from '@/lib/auth-client'
+import { useActiveOrganization } from '@/lib/auth/auth-client'
 import { DropdownMenu } from './dropdown-menu'
 import { DropdownOrganizations } from './dropdown-organizations'
 

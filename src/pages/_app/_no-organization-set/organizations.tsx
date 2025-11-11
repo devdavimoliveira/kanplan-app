@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '@/components/button'
 import { NewOrganizationDialog } from '@/components/new-organization-dialog'
-import { useListOrganizations } from '@/lib/auth-client'
+import { useListOrganizations } from '@/lib/auth/auth-client'
 import { OrganizationCard } from './-components/organization-card'
 import { OrganizationCardSkeleton } from './-components/organization-card-skeleton'
 

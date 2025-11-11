@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { organization } from '@/lib/auth-client'
+import { organization } from '@/lib/auth/auth-client'
 
 export const useCanUpdateAndDeleteOrganization = () => {
 	const [can, setCan] = useState(false)

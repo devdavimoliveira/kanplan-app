@@ -7,7 +7,7 @@ import {
 	organization,
 	useActiveOrganization,
 	useSession,
-} from '@/lib/auth-client'
+} from '@/lib/auth/auth-client'
 import { type Role, RoleEnum } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'

@@ -4,7 +4,7 @@ import { ChevronsUpDown, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/button'
 import { NewOrganizationDialog } from '@/components/new-organization-dialog'
-import { useListOrganizations } from '@/lib/auth-client'
+import { useListOrganizations } from '@/lib/auth/auth-client'
 import { DropdownMenuItem } from './item'
 
 export function DropdownOrganizations() {

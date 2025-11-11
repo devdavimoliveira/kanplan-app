@@ -6,7 +6,7 @@ import z from 'zod'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { PasswordInput } from '@/components/password-input'
-import { authClient } from '@/lib/auth-client'
+import { authClient } from '@/lib/auth/auth-client'
 import { cn } from '@/utils/cn'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 

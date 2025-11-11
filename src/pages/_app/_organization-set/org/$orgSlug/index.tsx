@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Button } from '@/components/button'
-import { organization } from '@/lib/auth-client'
+import { organization } from '@/lib/auth/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { BoardsGrid } from './-components/boards-grid'
 import { NewBoardDialog } from './-components/new-board-dialog'
