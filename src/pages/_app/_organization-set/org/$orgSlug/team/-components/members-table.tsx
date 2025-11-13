@@ -1,13 +1,9 @@
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useRouteContext } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import { Tooltip } from '@/components/tooltip'
-import {
-	organization,
-	useActiveOrganization,
-	useSession,
-} from '@/lib/auth/auth-client'
+import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
 import { type Role, RoleEnum } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
@@ -17,7 +13,7 @@ export function MembersTable() {
 
 	const { data: activeOrganization } = useActiveOrganization()
 
-	const { data: session } = useSession()
+	const { session } = useRouteContext({ from: '__root__' })
 
 	async function handleLeaveOrganization() {
 		if (!activeOrganization) return
