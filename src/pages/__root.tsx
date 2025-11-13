@@ -1,3 +1,4 @@
+import { sessionQueryOptions } from '@/queries/session-query'
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
@@ -12,6 +13,13 @@ interface RootRouteContext {
 }
 
 export const Route = createRootRouteWithContext<RootRouteContext>()({
+	beforeLoad: async ({ context: { queryClient } }) => {
+		const { data: session } = await queryClient.fetchQuery(
+			sessionQueryOptions()
+		)
+
+		return { session }
+	},
 	component: RootComponent,
 })
 
