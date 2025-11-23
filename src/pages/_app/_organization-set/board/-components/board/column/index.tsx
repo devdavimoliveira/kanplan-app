@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/button'
 import type { ColumnWithTasks } from '@/types/Column'
 import { cn } from '@/utils/cn'
-import { BoardCard } from './card'
+import { BoardCard } from '../card'
 import { CreateCardForm } from './create-card-form'
 
 interface BoardColumnProps {
