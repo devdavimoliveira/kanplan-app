@@ -4,6 +4,7 @@ import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
 import { ChangeMarkingColorDropdown } from './change-marking-color-dropdown'
 import { RemoveCardDialog } from './remove-card-dialog'
+import { MoveCardDialog } from './move-card-dialog'
 
 interface CardMenuProps {
 	task: Task
@@ -46,14 +47,7 @@ export function CardMenu({ task, boardHighlightColor }: CardMenuProps) {
 						/>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
-						<Button
-							type='button'
-							variant='raw'
-							className='justify-start gap-2 p-1'
-						>
-							<MoveRight size={18} />
-							Mover
-						</Button>
+						<MoveCardDialog taskId={task.id} />
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
 						<RemoveCardDialog taskId={task.id}>
