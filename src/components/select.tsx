@@ -9,7 +9,7 @@ export function Select({ className, ...props }: SelectProps) {
 		<div className='relative'>
 			<select
 				className={cn(
-					'h-10 w-full appearance-none rounded-lg border border-zinc-800 pl-2',
+					'h-10 w-full appearance-none rounded-lg border border-zinc-800 bg-zinc-800 pl-2',
 					className
 				)}
 				{...props}
