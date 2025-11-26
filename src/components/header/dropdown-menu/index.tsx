@@ -5,16 +5,20 @@ import kanplanSymbol from '@/assets/kanplan-symbol.svg'
 import { Avatar } from '@/components/avatar'
 import { signOut } from '@/lib/auth/auth-client'
 import { DropdownMenuItem } from './item'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function DropdownMenu() {
 	const navigate = useNavigate()
 
 	const { session } = useRouteContext({ from: '__root__' })
 
+	const queryClient = useQueryClient()
+
 	async function handleSignOut() {
 		await signOut({
 			fetchOptions: {
 				onSuccess: () => {
+					queryClient.clear()
 					navigate({ to: '/sign-in', replace: true })
 				},
 			},

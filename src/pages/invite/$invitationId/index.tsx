@@ -28,14 +28,15 @@ function Invite() {
 	const navigate = Route.useNavigate()
 	const { invitationId } = Route.useParams()
 	const { slug } = Route.useSearch()
-	const { session, invitation } = Route.useRouteContext()
+	const { session, invitation, queryClient } = Route.useRouteContext()
 
 	const isInvitationForMe = invitation.data?.email === session?.user.email
 
-	function handleSignOut() {
-		signOut({
+	async function handleSignOut() {
+		await signOut({
 			fetchOptions: {
 				onSuccess() {
+					queryClient.clear()
 					navigate({
 						to: '/invite/$invitationId',
 						params: { invitationId },
