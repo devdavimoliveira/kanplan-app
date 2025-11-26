@@ -1,32 +1,38 @@
-import { organization } from "@/lib/auth/auth-client";
-import { queryOptions } from "@tanstack/react-query";
+import { organization } from '@/lib/auth/auth-client'
+import { queryOptions } from '@tanstack/react-query'
 
 export const activeOrganizationQueryOptions = () =>
-  queryOptions({
-    queryKey: ["active-organization"],
-    queryFn: () =>
-      organization.getFullOrganization({
-        query: { membersLimit: 0 },
-      }),
-  });
+	queryOptions({
+		queryKey: ['active-organization'],
+		queryFn: () =>
+			organization.getFullOrganization({
+				query: { membersLimit: 0 },
+			}),
+	})
 
 type OrganizationBySlugQueryOptions = {
-  organizationSlug: string;
-};
+	organizationSlug: string
+}
 
 export const organizationBySlugQueryOptions = ({
-  organizationSlug,
+	organizationSlug,
 }: OrganizationBySlugQueryOptions) =>
-  queryOptions({
-    queryKey: ["organization", organizationSlug],
-    queryFn: () =>
-      organization.getFullOrganization({
-        query: { organizationSlug, membersLimit: 0 },
-      }),
-  });
+	queryOptions({
+		queryKey: ['organization', organizationSlug],
+		queryFn: () =>
+			organization.getFullOrganization({
+				query: { organizationSlug, membersLimit: 0 },
+			}),
+	})
 
 export const activeMemberQueryOptions = () =>
-  queryOptions({
-    queryKey: ["active-member"],
-    queryFn: () => organization.getActiveMember(),
-  });
+	queryOptions({
+		queryKey: ['active-member'],
+		queryFn: () => organization.getActiveMember(),
+	})
+
+export const organizationsQueryOptions = () =>
+	queryOptions({
+		queryKey: ['organizations'],
+		queryFn: () => organization.list(),
+	})
