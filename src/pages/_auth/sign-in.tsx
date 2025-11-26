@@ -12,7 +12,8 @@ import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 
 const searchSchema = z.object({
 	redirectTo: z.string().optional(),
-	params: z.string().optional(),
+	params: z.record(z.string(), z.string()).optional(),
+	orgSlug: z.string().optional(),
 })
 
 export const Route = createFileRoute('/_auth/sign-in')({
@@ -64,13 +65,14 @@ function SignIn() {
 					if (searchParams?.redirectTo?.includes('invite')) {
 						return navigate({
 							to: searchParams.redirectTo,
-							params: { invitationId: searchParams.params },
+							params: searchParams.params,
+							search: { orgSlug: searchParams.orgSlug },
 							replace: true,
 						})
 					}
 
 					navigate({ to: '/organizations', replace: true })
-				}, // TODO: redirect to the org page
+				},
 			},
 		})
 	}

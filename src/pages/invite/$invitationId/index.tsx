@@ -7,7 +7,7 @@ import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import logo from '../../../assets/kanplan-logo.svg'
 
 const searchSchema = z.object({
-	slug: z.string(),
+	orgSlug: z.string(),
 })
 
 export const Route = createFileRoute('/invite/$invitationId/')({
@@ -27,7 +27,7 @@ export const Route = createFileRoute('/invite/$invitationId/')({
 function Invite() {
 	const navigate = Route.useNavigate()
 	const { invitationId } = Route.useParams()
-	const { slug } = Route.useSearch()
+	const { orgSlug } = Route.useSearch()
 	const { session, invitation, queryClient } = Route.useRouteContext()
 
 	const isInvitationForMe = invitation.data?.email === session?.user.email
@@ -40,7 +40,7 @@ function Invite() {
 					navigate({
 						to: '/invite/$invitationId',
 						params: { invitationId },
-						search: { slug },
+						search: { orgSlug },
 					})
 				},
 			},
@@ -73,7 +73,7 @@ function Invite() {
 				onSuccess() {
 					navigate({
 						to: '/org/$orgSlug',
-						params: { orgSlug: slug },
+						params: { orgSlug },
 						replace: true,
 					})
 				},
@@ -98,7 +98,8 @@ function Invite() {
 										to='/sign-in'
 										search={{
 											redirectTo: '/invite/$invitationId',
-											params: invitationId,
+											params: { invitationId },
+											orgSlug,
 										}}
 									>
 										Entrar
@@ -109,7 +110,8 @@ function Invite() {
 										to='/sign-up'
 										search={{
 											redirectTo: '/invite/$invitationId',
-											params: invitationId,
+											params: { invitationId },
+											orgSlug,
 										}}
 									>
 										Criar conta

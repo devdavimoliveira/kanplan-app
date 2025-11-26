@@ -12,7 +12,8 @@ import { PasswordInput } from '../../components/password-input'
 
 const searchSchema = z.object({
 	redirectTo: z.string().optional(),
-	params: z.string().optional(),
+	params: z.record(z.string(), z.string()).optional(),
+	orgSlug: z.string().optional(),
 })
 
 export const Route = createFileRoute('/_auth/sign-up')({
@@ -65,7 +66,8 @@ function SignUp() {
 					if (searchParams?.redirectTo?.includes('invite')) {
 						return navigate({
 							to: searchParams.redirectTo,
-							params: { invitationId: searchParams.params },
+							params: searchParams.params,
+							search: { orgSlug: searchParams.orgSlug },
 							replace: true,
 						})
 					}
