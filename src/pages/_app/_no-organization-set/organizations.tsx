@@ -1,19 +1,21 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '@/components/button'
 import { NewOrganizationDialog } from '@/components/new-organization-dialog'
-import { useListOrganizations } from '@/lib/auth/auth-client'
-import { OrganizationCard } from './-components/organization-card'
-import { OrganizationCardSkeleton } from './-components/organization-card-skeleton'
+import { Suspense } from 'react'
+import { OrganizationsGrid } from './-components/organizations-grid'
+import { organizationsQueryOptions } from '@/queries/organization-queries'
+import { OrganizationsGridFallback } from './-components/organizations-grid-fallback'
 
 export const Route = createFileRoute(
 	'/_app/_no-organization-set/organizations'
 )({
+	loader: async ({ context: { queryClient } }) => {
+		queryClient.prefetchQuery(organizationsQueryOptions())
+	},
 	component: Organizations,
 })
 
 function Organizations() {
-	const { data, isPending } = useListOrganizations()
-
 	return (
 		<div className='mx-auto flex max-w-5xl flex-col gap-8 py-8'>
 			<h1 className='font-medium text-2xl'>Suas Organizações</h1>
@@ -22,19 +24,9 @@ function Organizations() {
 				trigger={<Button className='h-8 w-fit px-2'>Nova organização</Button>}
 			/>
 
-			<div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-				{isPending
-					? Array.from({ length: 3 }).map((_, index) => (
-							// biome-ignore lint/suspicious/noArrayIndexKey: index for skeletons
-							<OrganizationCardSkeleton key={index} />
-						))
-					: data?.map(organization => (
-							<OrganizationCard
-								key={organization.id}
-								organization={organization}
-							/>
-						))}
-			</div>
+			<Suspense fallback={<OrganizationsGridFallback />}>
+				<OrganizationsGrid />
+			</Suspense>
 		</div>
 	)
 }
