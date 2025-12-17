@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { boardsByOrganizationIdQueryOptions } from '@/queries/boards-queries'
 import { BoardCard } from './board-card'
+import { boardsByOrganizationIdQueryOptions } from '@/queries/organization-queries'
 
 interface BoardsGridProps {
 	organizationId: string

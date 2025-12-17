@@ -1,5 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Bolt, MoveRight, Trash2, Users } from 'lucide-react'
+import { Bolt, Trash2, Users } from 'lucide-react'
 import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
 import { ChangeMarkingColorDropdown } from './change-marking-color-dropdown'

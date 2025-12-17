@@ -7,7 +7,7 @@ export async function getBoardsByOrganizationId({
 	organizationId: string
 }) {
 	const { data } = await api.get<Board[]>(
-		`/boards/organization/${organizationId}`
+		`/organizations/${organizationId}/boards`
 	)
 
 	return data

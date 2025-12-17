@@ -5,9 +5,9 @@ import { organization } from '@/lib/auth/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { BoardsGrid } from './-components/boards-grid'
 import { NewBoardDialog } from './-components/new-board-dialog'
-import { boardsByOrganizationIdQueryOptions } from '@/queries/boards-queries'
 import { Suspense } from 'react'
 import { BoardsGridFallback } from './-components/boards-grid-fallback'
+import { boardsByOrganizationIdQueryOptions } from '@/queries/organization-queries'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug/')({
 	beforeLoad: async ({ params }) => {
