@@ -1,7 +1,9 @@
-export const RoleEnum = {
-	OWNER: 'owner',
-	ADMIN: 'admin',
-	MEMBER: 'member',
-} as const
+import { z } from 'zod'
 
-export type Role = (typeof RoleEnum)[keyof typeof RoleEnum]
+export const roleSchema = z.union([
+	z.literal('owner'),
+	z.literal('admin'),
+	z.literal('member'),
+])
+
+export type Role = z.infer<typeof roleSchema>
