@@ -7,8 +7,9 @@ import { routeTree } from './route-tree.gen'
 const router = createRouter({
 	routeTree,
 	context: { queryClient },
-	// defaultPreload: 'intent', // disabled preloading
+	defaultPreload: 'intent',
 	defaultPreloadStaleTime: 0,
+	scrollRestoration: true,
 })
 
 declare module '@tanstack/react-router' {
