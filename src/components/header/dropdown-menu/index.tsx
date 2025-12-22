@@ -1,7 +1,6 @@
 import * as DropdownPrimitive from '@radix-ui/react-dropdown-menu'
 import { Link, useNavigate, useRouteContext } from '@tanstack/react-router'
 import { CircleUserRound, LayoutDashboard, LogOut } from 'lucide-react'
-import kanplanSymbol from '@/assets/kanplan-symbol.svg'
 import { Avatar } from '@/components/avatar'
 import { signOut } from '@/lib/auth/auth-client'
 import { DropdownMenuItem } from './item'
@@ -55,14 +54,14 @@ export function DropdownMenu() {
 
 					<div>
 						<DropdownMenuItem asChild>
-							<Link to={'/'}>
-								<span>Projetos</span>
+							<Link to={'/organizations'}>
+								<span>Organizações</span>
 								<LayoutDashboard className='ml-auto size-4.5' />
 							</Link>
 						</DropdownMenuItem>
 
 						<DropdownMenuItem asChild>
-							<Link to={'/'}>
+							<Link to={'/account'}>
 								<span>Conta</span>
 								<CircleUserRound className='ml-auto size-4.5' />
 							</Link>
@@ -72,17 +71,6 @@ export function DropdownMenu() {
 					<DropdownPrimitive.Separator className='h-px bg-zinc-500' />
 
 					<div>
-						<DropdownMenuItem asChild>
-							<Link to={'/'}>
-								<span>Página Inicial</span>
-								<img
-									src={kanplanSymbol}
-									alt='Kanplan'
-									className='ml-auto size-4.5'
-								/>
-							</Link>
-						</DropdownMenuItem>
-
 						<DropdownMenuItem asChild>
 							<button type='button' onClick={handleSignOut}>
 								<span>Sair</span>

@@ -15,6 +15,7 @@ import { Route as AppIndexRouteImport } from './pages/_app/index'
 import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
 import { Route as InviteInvitationIdIndexRouteImport } from './pages/invite/$invitationId/index'
+import { Route as AppAccountIndexRouteImport } from './pages/_app/account/index'
 import { Route as AppNoOrganizationSetOrganizationsRouteImport } from './pages/_app/_no-organization-set/organizations'
 import { Route as AppOrganizationSetBoardBoardIdRouteImport } from './pages/_app/_organization-set/board/$boardId'
 import { Route as AppOrganizationSetOrgOrgSlugLayoutRouteImport } from './pages/_app/_organization-set/org/$orgSlug/layout'
@@ -49,6 +50,11 @@ const InviteInvitationIdIndexRoute = InviteInvitationIdIndexRouteImport.update({
   id: '/invite/$invitationId/',
   path: '/invite/$invitationId/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppAccountIndexRoute = AppAccountIndexRouteImport.update({
+  id: '/account/',
+  path: '/account/',
+  getParentRoute: () => AppLayoutRoute,
 } as any)
 const AppNoOrganizationSetOrganizationsRoute =
   AppNoOrganizationSetOrganizationsRouteImport.update({
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthSignUpRoute
   '/': typeof AppIndexRoute
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
+  '/account': typeof AppAccountIndexRoute
   '/invite/$invitationId': typeof InviteInvitationIdIndexRoute
   '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   '/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof AuthSignUpRoute
   '/': typeof AppIndexRoute
   '/organizations': typeof AppNoOrganizationSetOrganizationsRoute
+  '/account': typeof AppAccountIndexRoute
   '/invite/$invitationId': typeof InviteInvitationIdIndexRoute
   '/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
   '/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugIndexRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_app/': typeof AppIndexRoute
   '/_app/_no-organization-set/organizations': typeof AppNoOrganizationSetOrganizationsRoute
+  '/_app/account/': typeof AppAccountIndexRoute
   '/invite/$invitationId/': typeof InviteInvitationIdIndexRoute
   '/_app/_organization-set/org/$orgSlug': typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   '/_app/_organization-set/board/$boardId': typeof AppOrganizationSetBoardBoardIdRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/'
     | '/organizations'
+    | '/account'
     | '/invite/$invitationId'
     | '/org/$orgSlug'
     | '/board/$boardId'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/'
     | '/organizations'
+    | '/account'
     | '/invite/$invitationId'
     | '/board/$boardId'
     | '/org/$orgSlug'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/_auth/sign-up'
     | '/_app/'
     | '/_app/_no-organization-set/organizations'
+    | '/_app/account/'
     | '/invite/$invitationId/'
     | '/_app/_organization-set/org/$orgSlug'
     | '/_app/_organization-set/board/$boardId'
@@ -214,6 +226,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/invite/$invitationId'
       preLoaderRoute: typeof InviteInvitationIdIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/account/': {
+      id: '/_app/account/'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AppAccountIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
     }
     '/_app/_no-organization-set/organizations': {
       id: '/_app/_no-organization-set/organizations'
@@ -284,6 +303,7 @@ const AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren =
 interface AppLayoutRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppNoOrganizationSetOrganizationsRoute: typeof AppNoOrganizationSetOrganizationsRoute
+  AppAccountIndexRoute: typeof AppAccountIndexRoute
   AppOrganizationSetOrgOrgSlugLayoutRoute: typeof AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren
   AppOrganizationSetBoardBoardIdRoute: typeof AppOrganizationSetBoardBoardIdRoute
 }
@@ -292,6 +312,7 @@ const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppIndexRoute: AppIndexRoute,
   AppNoOrganizationSetOrganizationsRoute:
     AppNoOrganizationSetOrganizationsRoute,
+  AppAccountIndexRoute: AppAccountIndexRoute,
   AppOrganizationSetOrgOrgSlugLayoutRoute:
     AppOrganizationSetOrgOrgSlugLayoutRouteWithChildren,
   AppOrganizationSetBoardBoardIdRoute: AppOrganizationSetBoardBoardIdRoute,
