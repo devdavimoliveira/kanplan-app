@@ -4,7 +4,7 @@ import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import { Tooltip } from '@/components/tooltip'
 import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
-import { type Role, RoleEnum } from '@/types/Role'
+import { type Role, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 
@@ -73,13 +73,13 @@ export function MembersTable() {
 								<Tooltip
 									side='bottom'
 									content='Você não pode sair da organização pois é o único proprietário'
-									disabled={!(member.role === RoleEnum.OWNER)}
+									disabled={!(member.role === roles['owner'])}
 								>
 									<Button
 										type='button'
 										variant='outline'
 										className='h-9 px-2'
-										disabled={member.role === RoleEnum.OWNER}
+										disabled={member.role === roles['owner']}
 										onClick={handleLeaveOrganization}
 									>
 										Deixar equipe

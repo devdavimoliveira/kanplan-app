@@ -8,7 +8,7 @@ import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Select } from '@/components/select'
 import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
-import { RoleEnum } from '@/types/Role'
+import { roleSchema, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 
@@ -18,15 +18,13 @@ interface InviteMemberDialogProps {
 
 const inviteMemberSchema = z.object({
 	email: z.email('Insira um e-mail válido'),
-	role: z.enum(Object.values(RoleEnum)),
+	role: roleSchema,
 })
 
 type InviteMemberFormType = z.infer<typeof inviteMemberSchema>
 
 export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
 	const [open, setOpen] = useState(false)
-
-	const roles = Object.values(RoleEnum)
 
 	const { data: activeOrganization } = useActiveOrganization()
 
@@ -83,10 +81,10 @@ export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
 					>
 						<Select
 							id='select-role'
-							defaultValue={RoleEnum.MEMBER}
+							defaultValue={roles['member']}
 							{...register('role')}
 						>
-							{roles.map(role => (
+							{Object.values(roles).map(role => (
 								<option key={role} value={role} className='bg-zinc-900'>
 									{translateRoleToPtBR(role)}
 								</option>
