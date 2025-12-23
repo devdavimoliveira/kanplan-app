@@ -32,6 +32,7 @@ export function DropdownOrganizations() {
 								<Link
 									to='/org/$orgSlug'
 									params={{ orgSlug: organization.slug }}
+									preload={false}
 								>
 									{organization.name}
 								</Link>
