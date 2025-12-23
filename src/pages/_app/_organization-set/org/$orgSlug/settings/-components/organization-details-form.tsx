@@ -6,6 +6,7 @@ import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
+import { useRouteContext } from '@tanstack/react-router'
 
 const organizationDetailsSchema = z.object({
 	name: z.string().nonempty('Insira um nome'),
@@ -15,7 +16,11 @@ const organizationDetailsSchema = z.object({
 type OrganizationDetailsFormType = z.infer<typeof organizationDetailsSchema>
 
 export function OrganizationDetailsForm() {
-	const { data: activeOrganization, refetch } = useActiveOrganization()
+	const { refetch } = useActiveOrganization()
+
+	const { activeOrganization } = useRouteContext({
+		from: '/_app/_organization-set/org/$orgSlug',
+	})
 
 	const {
 		register,

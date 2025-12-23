@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
-import { useLoaderData, useNavigate } from '@tanstack/react-router'
+import { useNavigate, useRouteContext } from '@tanstack/react-router'
 import { X } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -23,8 +23,8 @@ const deleteOrganizationSchema = z
 export function DeleteOrganizationDialog() {
 	const navigate = useNavigate()
 
-	const { activeOrganization } = useLoaderData({
-		from: '/_app/_organization-set/org/$orgSlug/settings/',
+	const { activeOrganization } = useRouteContext({
+		from: '/_app/_organization-set/org/$orgSlug',
 	})
 
 	const {

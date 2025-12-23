@@ -27,21 +27,6 @@ export const Route = createFileRoute(
 			})
 		}
 	},
-	loader: async ({ params }) => {
-		const { data: activeOrganization, error: activeOrganizationError } =
-			await organization.getFullOrganization({
-				query: { organizationSlug: params.orgSlug, membersLimit: 0 },
-			})
-
-		if (activeOrganizationError) {
-			toast.error(getAuthErrorMessage(activeOrganizationError.code!))
-			throw redirect({ to: '/organizations' })
-		}
-
-		return {
-			activeOrganization,
-		}
-	},
 	component: OrganizationSettings,
 })
 

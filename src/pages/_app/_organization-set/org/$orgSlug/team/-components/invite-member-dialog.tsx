@@ -7,10 +7,11 @@ import z from 'zod'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Select } from '@/components/select'
-import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
+import { organization } from '@/lib/auth/auth-client'
 import { roleSchema, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
+import { useRouteContext } from '@tanstack/react-router'
 
 interface InviteMemberDialogProps {
 	trigger: ReactNode
@@ -26,7 +27,9 @@ type InviteMemberFormType = z.infer<typeof inviteMemberSchema>
 export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
 	const [open, setOpen] = useState(false)
 
-	const { data: activeOrganization } = useActiveOrganization()
+	const { activeOrganization } = useRouteContext({
+		from: '/_app/_organization-set/org/$orgSlug',
+	})
 
 	const {
 		register,

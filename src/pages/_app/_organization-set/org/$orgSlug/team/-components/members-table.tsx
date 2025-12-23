@@ -3,7 +3,7 @@ import { toast } from 'sonner'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import { Tooltip } from '@/components/tooltip'
-import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
+import { organization } from '@/lib/auth/auth-client'
 import { type Role, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
@@ -11,7 +11,9 @@ import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 export function MembersTable() {
 	const navigate = useNavigate()
 
-	const { data: activeOrganization } = useActiveOrganization()
+	const { activeOrganization } = useRouteContext({
+		from: '/_app/_organization-set/org/$orgSlug',
+	})
 
 	const { session } = useRouteContext({ from: '__root__' })
 
@@ -69,7 +71,7 @@ export function MembersTable() {
 							{translateRoleToPtBR(member.role as Role)}
 						</td>
 						<td className='p-4 text-right'>
-							{session?.user.id === member.user.id && (
+							{session?.user.id === member.userId && (
 								<Tooltip
 									side='bottom'
 									content='Você não pode sair da organização pois é o único proprietário'
