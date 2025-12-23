@@ -1,8 +1,5 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { toast } from 'sonner'
+import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '@/components/button'
-import { organization } from '@/lib/auth/auth-client'
-import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { BoardsGrid } from './-components/boards-grid'
 import { NewBoardDialog } from './-components/new-board-dialog'
 import { Suspense } from 'react'
@@ -10,34 +7,6 @@ import { BoardsGridFallback } from './-components/boards-grid-fallback'
 import { boardsByOrganizationIdQueryOptions } from '@/queries/organization-queries'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug/')({
-	beforeLoad: async ({ params }) => {
-		const { data: activeOrganization, error: activeOrganizationError } =
-			await organization.getFullOrganization({
-				query: { organizationSlug: params.orgSlug, membersLimit: 0 },
-			})
-
-		if (activeOrganizationError) {
-			toast.error(getAuthErrorMessage(activeOrganizationError.code!))
-			throw redirect({ to: '/organizations' })
-		}
-
-		await organization.setActive({
-			organizationId: activeOrganization.id,
-		})
-
-		const { data: activeMember, error: activeMemberError } =
-			await organization.getActiveMember()
-
-		if (activeMemberError) {
-			toast.error(getAuthErrorMessage(activeMemberError.code!))
-			throw redirect({ to: '/organizations' })
-		}
-
-		return {
-			activeOrganization,
-			activeMember,
-		}
-	},
 	loader: ({ context: { queryClient, activeOrganization } }) => {
 		queryClient.prefetchQuery(
 			boardsByOrganizationIdQueryOptions({
