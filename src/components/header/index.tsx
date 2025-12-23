@@ -15,7 +15,7 @@ export function Header() {
 	})
 
 	return (
-		<header className='flex h-[var(--header-height)] items-center justify-between gap-6'>
+		<header className='flex h-(--header-height) items-center justify-between gap-6'>
 			<div className='flex max-w-96 items-center gap-2 overflow-hidden'>
 				<div className='xs:flex hidden shrink-0 items-center gap-2'>
 					<Link to='/'>
