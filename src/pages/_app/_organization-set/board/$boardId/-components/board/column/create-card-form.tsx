@@ -34,7 +34,7 @@ export function CreateCardForm({
 	const queryClient = useQueryClient()
 
 	const { boardId } = useParams({
-		from: '/_app/_organization-set/board/$boardId',
+		from: '/_app/_organization-set/board/$boardId/',
 	})
 
 	const {

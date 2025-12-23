@@ -18,7 +18,7 @@ export function RemoveCardDialog({ taskId, children }: RemoveCardDialogProps) {
 	const queryClient = useQueryClient()
 
 	const { boardId } = useParams({
-		from: '/_app/_organization-set/board/$boardId',
+		from: '/_app/_organization-set/board/$boardId/',
 	})
 
 	const { mutate, isPending } = useMutation(
