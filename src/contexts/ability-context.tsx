@@ -2,6 +2,7 @@ import { defineAbilityFor, type AppAbility } from '@/lib/casl/ability'
 import { createContext, type ReactNode } from 'react'
 import { createContextualCan } from '@casl/react'
 import type { AuthUser } from '@/lib/casl/schemas/auth-user'
+import { useContext } from 'react'
 
 export const AbilityContext = createContext({} as AppAbility)
 export const Can = createContextualCan(AbilityContext.Consumer)
@@ -19,4 +20,9 @@ export function AbilityProvider({ children, authUser }: AbilityProviderProps) {
 			{children}
 		</AbilityContext.Provider>
 	)
+}
+
+export const useAbility = () => {
+	const ability = useContext(AbilityContext)
+	return ability
 }
