@@ -1,11 +1,15 @@
-import { useCanUpdateAndDeleteOrganization } from '@/hooks/permissions/use-can-update-and-delete-organization'
 import { useActiveOrganization } from '@/lib/auth/auth-client'
 import { type ITabs, Tabs } from './tabs'
+import { useAbility } from '@/contexts/ability-context'
 
 export function OrganizationHeader() {
 	const { data: activeOrganization } = useActiveOrganization()
 
-	const canUpdateAndDeleteOrganization = useCanUpdateAndDeleteOrganization()
+	const ability = useAbility()
+
+	const canUpdateAndDeleteOrganization =
+		ability.can('update', 'Organization') &&
+		ability.can('delete', 'Organization')
 
 	const tabs: ITabs = [
 		{

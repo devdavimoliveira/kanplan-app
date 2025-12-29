@@ -7,6 +7,9 @@ import {
 import { toast } from 'sonner'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { organization } from '@/lib/auth/auth-client'
+import { AbilityProvider } from '@/contexts/ability-context'
+import type { AuthUser } from '@/lib/casl/schemas/auth-user'
+import type { Role } from '@/types/Role'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
 	beforeLoad: async ({ params, context: { queryClient } }) => {
@@ -34,19 +37,29 @@ export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
 			throw redirect({ to: '/organizations' })
 		}
 
+		const authUser: AuthUser = {
+			id: activeMember.userId,
+			role: activeMember.role as Role,
+		}
+
 		return {
 			activeOrganization,
 			activeMember,
+			authUser,
 		}
 	},
 	component: OrganizationLayout,
 })
 
 function OrganizationLayout() {
+	const { authUser } = Route.useRouteContext()
+
 	return (
-		<div>
-			<OrganizationHeader />
-			<Outlet />
-		</div>
+		<AbilityProvider authUser={authUser}>
+			<div>
+				<OrganizationHeader />
+				<Outlet />
+			</div>
+		</AbilityProvider>
 	)
 }
