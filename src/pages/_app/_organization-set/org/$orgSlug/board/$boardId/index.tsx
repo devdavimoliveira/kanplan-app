@@ -4,7 +4,7 @@ import { queryClient } from '@/lib/query-client'
 import { boardByIdQueryOptions } from '@/queries/boards-queries'
 import { Board as KanbanBoard } from './-components/board'
 
-export const Route = createFileRoute('/_app/_organization-set/board/$boardId/')(
+export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug/board/$boardId/')(
 	{
 		loader: ({ params: { boardId } }) => {
 			queryClient.prefetchQuery(boardByIdQueryOptions({ boardId }))

@@ -21,7 +21,7 @@ export function ChangeMarkingColorDropdown({
 	const queryClient = useQueryClient()
 
 	const { boardId } = useParams({
-		from: '/_app/_organization-set/board/$boardId/',
+		from: '/_app/_organization-set/org/$orgSlug/board/$boardId/',
 	})
 
 	const [colorPickerOpen, setColorPickerOpen] = useState(false)

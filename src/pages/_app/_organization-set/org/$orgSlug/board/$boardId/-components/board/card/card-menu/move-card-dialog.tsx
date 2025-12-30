@@ -29,7 +29,7 @@ export function MoveCardDialog({ taskId }: MoveCardDialogProps) {
 	const [open, setOpen] = useState(false)
 
 	const { boardId } = useParams({
-		from: '/_app/_organization-set/board/$boardId/',
+		from: '/_app/_organization-set/org/$orgSlug/board/$boardId/',
 	})
 
 	const {

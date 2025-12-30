@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useParams } from '@tanstack/react-router'
 import type { Board } from '@/types/Board'
 
 interface BoardCardProps {
@@ -6,8 +6,15 @@ interface BoardCardProps {
 }
 
 export function BoardCard({ board }: BoardCardProps) {
+	const { orgSlug } = useParams({
+		from: '/_app/_organization-set/org/$orgSlug',
+	})
+
 	return (
-		<Link to='/board/$boardId' params={{ boardId: board.id }}>
+		<Link
+			to='/org/$orgSlug/board/$boardId'
+			params={{ orgSlug, boardId: board.id }}
+		>
 			<div className='flex h-30 flex-col rounded-lg bg-zinc-900 shadow-card'>
 				<div
 					className='h-full rounded-t-lg'
