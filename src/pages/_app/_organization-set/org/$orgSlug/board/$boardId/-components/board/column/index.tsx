@@ -6,6 +6,7 @@ import type { ColumnWithTasks } from '@/types/Column'
 import { cn } from '@/utils/cn'
 import { BoardCard } from '../card'
 import { CreateCardForm } from './create-card-form'
+import { Can } from '@/contexts/ability-context'
 
 interface BoardColumnProps {
 	column: ColumnWithTasks
@@ -57,16 +58,18 @@ export function BoardColumn({ column, highlightColor }: BoardColumnProps) {
 					</li>
 				)}
 			</ul>
-			{!isCreatingCard && (
-				<Button
-					variant='ghost'
-					type='button'
-					onClick={() => setIsCreatingCard(true)}
-				>
-					<Plus size={20} className='mr-2' />
-					Adicionar um cartão
-				</Button>
-			)}
+			<Can I='create' a='Task'>
+				{!isCreatingCard && (
+					<Button
+						variant='ghost'
+						type='button'
+						onClick={() => setIsCreatingCard(true)}
+					>
+						<Plus size={20} className='mr-2' />
+						Adicionar um cartão
+					</Button>
+				)}
+			</Can>
 		</div>
 	)
 }

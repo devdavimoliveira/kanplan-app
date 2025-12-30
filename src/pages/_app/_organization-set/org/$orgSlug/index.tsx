@@ -5,6 +5,7 @@ import { NewBoardDialog } from './-components/new-board-dialog'
 import { Suspense } from 'react'
 import { BoardsGridFallback } from './-components/boards-grid-fallback'
 import { boardsByOrganizationIdQueryOptions } from '@/queries/organization-queries'
+import { Can } from '@/contexts/ability-context'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug/')({
 	loader: ({ context: { queryClient, activeOrganization } }) => {
@@ -24,11 +25,13 @@ function Organization() {
 		<div className='mx-auto flex max-w-5xl flex-col gap-8 py-8'>
 			<h1 className='font-medium text-2xl'>Quadros</h1>
 
-			<NewBoardDialog
-				trigger={<Button className='h-8 w-fit px-2'>Novo quadro</Button>}
-				organization={activeOrganization!}
-				member={activeMember}
-			/>
+			<Can I='create' a='Board'>
+				<NewBoardDialog
+					trigger={<Button className='h-8 w-fit px-2'>Novo quadro</Button>}
+					organization={activeOrganization!}
+					member={activeMember}
+				/>
+			</Can>
 
 			<Suspense fallback={<BoardsGridFallback />}>
 				<BoardsGrid organizationId={activeOrganization.id} />

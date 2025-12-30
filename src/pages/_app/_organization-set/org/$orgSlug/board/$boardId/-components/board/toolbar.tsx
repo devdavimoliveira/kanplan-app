@@ -2,6 +2,7 @@ import { Link, useMatchRoute, useParams } from '@tanstack/react-router'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import { cn } from '@/utils/cn'
 import { NewColumnButton } from './new-column-button'
+import { Can } from '@/contexts/ability-context'
 
 interface BoardToolbarProps {
 	board: BoardWithColumnsAndTasks
@@ -30,7 +31,10 @@ export function BoardToolbar({ board }: BoardToolbarProps) {
 					Visualização
 				</div>
 			</Link>
-			<NewColumnButton board={board} />
+
+			<Can I='create' a='Column'>
+				<NewColumnButton board={board} />
+			</Can>
 		</div>
 	)
 }
