@@ -9,6 +9,7 @@ import { boardSubject } from './subjects/board-subject'
 import { columnSubject } from './subjects/column-subject'
 import { organizationSubject } from './subjects/organization-subject'
 import { taskSubject } from './subjects/task-subject'
+import { invitationSubject } from './subjects/invitation-subject'
 import type { AuthUser } from './schemas/auth-user'
 import { permissions } from './permissions'
 
@@ -17,6 +18,7 @@ const appAbilitiesSchema = z.union([
 	boardSubject,
 	columnSubject,
 	taskSubject,
+	invitationSubject,
 	z.tuple([z.literal('manage'), z.literal('all')]),
 ])
 
