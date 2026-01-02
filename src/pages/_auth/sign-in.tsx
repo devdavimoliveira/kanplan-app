@@ -71,7 +71,11 @@ function SignIn() {
 						})
 					}
 
-					navigate({ to: '/organizations', replace: true })
+					navigate({
+						to: '/organizations',
+						replace: true,
+						reloadDocument: true,
+					})
 				},
 			},
 		})
