@@ -3,7 +3,7 @@ import { toast } from 'sonner'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import { Tooltip } from '@/components/tooltip'
-import { organization } from '@/lib/auth/auth-client'
+import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
 import { type Role, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
@@ -11,9 +11,7 @@ import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 export function MembersTable() {
 	const navigate = useNavigate()
 
-	const { activeOrganization } = useRouteContext({
-		from: '/_app/_organization-set/org/$orgSlug',
-	})
+	const { data: activeOrganization } = useActiveOrganization()
 
 	const { session } = useRouteContext({ from: '__root__' })
 
