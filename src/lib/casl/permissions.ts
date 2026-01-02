@@ -1,7 +1,8 @@
-import type { AuthUser } from './schemas/auth-user'
-import type { AppAbility } from './ability'
+import type { AuthUser, authUserSchema } from './schemas/auth-user'
+import { defineAbilityFor, type AppAbility } from './ability'
 import { AbilityBuilder } from '@casl/ability'
 import type { Role } from '@/types/Role'
+import z from 'zod'
 
 type PermissionsByRole = (
 	user: AuthUser,
@@ -21,4 +22,12 @@ export const permissions: Record<Role, PermissionsByRole> = {
 	member: (_, { can }) => {
 		can('support', 'Task')
 	},
+}
+
+type GetUserPermissionsParams = z.infer<typeof authUserSchema>
+
+export function getUserPermissions({ id, role }: GetUserPermissionsParams) {
+	const ability = defineAbilityFor({ id, role })
+
+	return ability
 }
