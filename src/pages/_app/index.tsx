@@ -1,10 +1,10 @@
 import { createFileRoute, Navigate, redirect } from '@tanstack/react-router'
-import { activeOrganizationQueryOptions } from '@/queries/organization-queries'
+import { organization } from '@/lib/auth/auth-client'
 
 export const Route = createFileRoute('/_app/')({
-	beforeLoad: async ({ context: { queryClient } }) => {
-		const { data: activeOrganization } = await queryClient.fetchQuery(
-			activeOrganizationQueryOptions()
+	beforeLoad: async () => {
+		const { data: activeOrganization } = await organization.getFullOrganization(
+			{ query: { membersLimit: 0 } }
 		)
 
 		if (!activeOrganization)

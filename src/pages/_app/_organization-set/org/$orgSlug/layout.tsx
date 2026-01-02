@@ -1,9 +1,5 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { OrganizationHeader } from './-components/header'
-import {
-	activeMemberQueryOptions,
-	organizationBySlugQueryOptions,
-} from '@/queries/organization-queries'
 import { toast } from 'sonner'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { organization } from '@/lib/auth/auth-client'
@@ -12,25 +8,19 @@ import type { AuthUser } from '@/lib/casl/schemas/auth-user'
 import type { Role } from '@/types/Role'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
-	beforeLoad: async ({ params, context: { queryClient } }) => {
+	beforeLoad: async ({ params }) => {
 		const { data: activeOrganization, error: activeOrganizationError } =
-			await queryClient.ensureQueryData(
-				organizationBySlugQueryOptions({
-					organizationSlug: params.orgSlug,
-				})
-			)
+			await organization.setActive({
+				organizationSlug: params.orgSlug,
+			})
 
 		if (activeOrganizationError) {
 			toast.error(getAuthErrorMessage(activeOrganizationError.code!))
 			throw redirect({ to: '/organizations' })
 		}
 
-		await organization.setActive({
-			organizationId: activeOrganization.id,
-		})
-
 		const { data: activeMember, error: activeMemberError } =
-			await queryClient.ensureQueryData(activeMemberQueryOptions())
+			await organization.getActiveMember()
 
 		if (activeMemberError) {
 			toast.error(getAuthErrorMessage(activeMemberError.code!))
