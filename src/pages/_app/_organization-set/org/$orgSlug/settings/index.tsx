@@ -1,24 +1,21 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { organization } from '@/lib/auth/auth-client'
-import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { OrganizationDangerZone } from './-components/organization-danger-zone'
 import { OrganizationDetailsForm } from './-components/organization-details-form'
+import type { Role } from '@/types/Role'
+import { getUserPermissions } from '@/lib/casl/permissions'
 
 export const Route = createFileRoute(
 	'/_app/_organization-set/org/$orgSlug/settings/'
 )({
-	beforeLoad: async ({ params }) => {
-		const { data, error } = await organization.hasPermission({
-			permission: {
-				organization: ['update', 'delete'],
-			},
+	beforeLoad: async ({ params, context: { activeMember } }) => {
+		const { cannot } = getUserPermissions({
+			id: activeMember.userId,
+			role: activeMember.role as Role,
 		})
 
-		if (error || data?.success === false) {
-			if (error?.code) {
-				toast.error(getAuthErrorMessage(error.code))
-			}
+		if (cannot('update', 'Organization')) {
+			toast.error('Você não tem permissão para configurar a organização')
 
 			throw redirect({
 				to: '/org/$orgSlug',
