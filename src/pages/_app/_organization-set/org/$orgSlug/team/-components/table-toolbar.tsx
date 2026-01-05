@@ -3,7 +3,12 @@ import { Input } from '@/components/input'
 import { InviteMemberDialog } from './invite-member-dialog'
 import { Can } from '@/contexts/ability-context'
 
-export function TableToolbar() {
+interface TableToolbarProps {
+	filter: string
+	onFilterChange: (filter: string) => void
+}
+
+export function TableToolbar({ filter, onFilterChange }: TableToolbarProps) {
 	return (
 		<div className='mb-4 flex xs:flex-row flex-col xs:justify-between gap-4'>
 			<Can I='create' a='Invitation'>
@@ -15,7 +20,12 @@ export function TableToolbar() {
 					}
 				/>
 			</Can>
-			<Input type='text' placeholder='Filtrar membros' />
+			<Input
+				type='text'
+				placeholder='Filtrar membros'
+				value={filter}
+				onChange={e => onFilterChange(e.target.value)}
+			/>
 		</div>
 	)
 }

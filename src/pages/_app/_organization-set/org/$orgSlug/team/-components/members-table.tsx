@@ -8,10 +8,29 @@ import { type Role, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 
-export function MembersTable() {
+import { useMemo } from 'react'
+
+interface MembersTableProps {
+	filter: string
+}
+
+export function MembersTable({ filter }: MembersTableProps) {
 	const navigate = useNavigate()
 
 	const { data: activeOrganization } = useActiveOrganization()
+
+	const filteredMembers = useMemo(() => {
+		if (!activeOrganization?.members) return []
+
+		const normalizedFilter = filter.toLowerCase()
+
+		return activeOrganization.members.filter(member => {
+			return (
+				member.user.name.toLowerCase().includes(normalizedFilter) ||
+				member.user.email.toLowerCase().includes(normalizedFilter)
+			)
+		})
+	}, [activeOrganization?.members, filter])
 
 	const { session } = useRouteContext({ from: '__root__' })
 
@@ -46,7 +65,7 @@ export function MembersTable() {
 				</tr>
 			</thead>
 			<tbody className='bg-zinc-900'>
-				{activeOrganization?.members.map(member => (
+				{filteredMembers.map(member => (
 					<tr key={member.id}>
 						<td className='p-4 text-left'>
 							<div className='flex items-center gap-2'>
