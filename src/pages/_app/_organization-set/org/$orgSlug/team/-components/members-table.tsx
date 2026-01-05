@@ -9,6 +9,7 @@ import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 
 import { useMemo } from 'react'
+import { Can } from '@/contexts/ability-context'
 
 interface MembersTableProps {
 	filter: string
@@ -54,6 +55,20 @@ export function MembersTable({ filter }: MembersTableProps) {
 		})
 	}
 
+	async function handleRemoveMember(memberId: string) {
+		if (!activeOrganization) return
+
+		await organization.removeMember({
+			memberIdOrEmail: memberId,
+			organizationId: activeOrganization.id,
+			fetchOptions: {
+				onError({ error }) {
+					toast.error(getAuthErrorMessage(error.code))
+				},
+			},
+		})
+	}
+
 	return (
 		<table className='w-full'>
 			<thead>
@@ -88,7 +103,7 @@ export function MembersTable({ filter }: MembersTableProps) {
 							{translateRoleToPtBR(member.role as Role)}
 						</td>
 						<td className='p-4 text-right'>
-							{session?.user.id === member.userId && (
+							{session!.user.id === member.userId ? (
 								<Tooltip
 									side='bottom'
 									content='Você não pode sair da organização pois é o único proprietário'
@@ -104,6 +119,19 @@ export function MembersTable({ filter }: MembersTableProps) {
 										Deixar equipe
 									</Button>
 								</Tooltip>
+							) : (
+								!(member.role === roles['owner']) && (
+									<Can I='delete' a='Member'>
+										<Button
+											type='button'
+											variant='warning'
+											className='h-9 px-2'
+											onClick={() => handleRemoveMember(member.id)}
+										>
+											Remover da equipe
+										</Button>
+									</Can>
+								)
 							)}
 						</td>
 					</tr>

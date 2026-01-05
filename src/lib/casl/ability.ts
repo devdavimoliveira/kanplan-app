@@ -12,6 +12,7 @@ import { taskSubject } from './subjects/task-subject'
 import { invitationSubject } from './subjects/invitation-subject'
 import type { AuthUser } from './schemas/auth-user'
 import { permissions } from './permissions'
+import { memberSubject } from './subjects/member-subject'
 
 const appAbilitiesSchema = z.union([
 	organizationSubject,
@@ -19,6 +20,7 @@ const appAbilitiesSchema = z.union([
 	columnSubject,
 	taskSubject,
 	invitationSubject,
+	memberSubject,
 	z.tuple([z.literal('manage'), z.literal('all')]),
 ])
 
