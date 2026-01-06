@@ -6,7 +6,7 @@ export interface UpdateTaskParams {
 }
 
 export interface UpdateTaskBody
-	extends Omit<Partial<Task>, 'id' | 'createdAt'> {}
+	extends Omit<Partial<Task>, 'id' | 'createdAt' | 'createdBy'> {}
 
 export async function updateTask(
 	params: UpdateTaskParams,
