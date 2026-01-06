@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useParams } from '@tanstack/react-router'
+import { useParams, useRouteContext } from '@tanstack/react-router'
 import { produce } from 'immer'
 import { X } from 'lucide-react'
 import { useEffect } from 'react'
@@ -22,6 +22,7 @@ const createCardSchema = z.object({
 	description: z.string(),
 	position: z.number().positive(),
 	columnId: z.uuid(),
+	createdBy: z.string(),
 })
 
 type CreateCardFormType = z.infer<typeof createCardSchema>
@@ -37,6 +38,10 @@ export function CreateCardForm({
 		from: '/_app/_organization-set/org/$orgSlug/board/$boardId/',
 	})
 
+	const { activeMember } = useRouteContext({
+		from: '/_app/_organization-set/org/$orgSlug',
+	})
+
 	const {
 		register,
 		handleSubmit,
@@ -48,12 +53,13 @@ export function CreateCardForm({
 			description: '',
 			position: column.tasks.length + 1,
 			columnId: column.id,
+			createdBy: activeMember.userId,
 		},
 	})
 
 	const { mutate } = useMutation(
 		createTaskMutationOptions({
-			onMutate: async ({ description, position, columnId }) => {
+			onMutate: async ({ description, position, columnId, createdBy }) => {
 				await queryClient.cancelQueries({ queryKey: ['board', boardId] })
 
 				const prevBoard = queryClient.getQueryData<BoardWithColumnsAndTasks>([
@@ -76,6 +82,8 @@ export function CreateCardForm({
 								columnId,
 								markingColor: boardHighlightColor,
 								createdAt: Date.now().toString(),
+								createdBy,
+								assignedBy: null,
 							})
 						})
 					}
@@ -105,6 +113,7 @@ export function CreateCardForm({
 				description: data.description,
 				position: data.position,
 				columnId: data.columnId,
+				createdBy: data.createdBy,
 			},
 			{
 				onError: () => {

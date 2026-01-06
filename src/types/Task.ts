@@ -5,4 +5,6 @@ export type Task = {
 	markingColor: string | null
 	columnId: string
 	createdAt: string | null
+	createdBy: string
+	assignedBy: string | null
 }

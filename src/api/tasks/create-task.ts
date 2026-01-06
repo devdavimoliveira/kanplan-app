@@ -5,6 +5,7 @@ export interface CreateTaskBody {
 	description: string
 	position: number
 	columnId: string
+	createdBy: string
 }
 
 export async function createTask(body: CreateTaskBody) {
