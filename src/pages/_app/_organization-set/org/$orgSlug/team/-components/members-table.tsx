@@ -10,6 +10,8 @@ import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
 
 import { useMemo } from 'react'
 import { Can } from '@/contexts/ability-context'
+import { memberSchema } from '@/lib/casl/schemas/member'
+import { subject } from '@casl/ability'
 
 interface MembersTableProps {
 	filter: string
@@ -120,18 +122,19 @@ export function MembersTable({ filter }: MembersTableProps) {
 									</Button>
 								</Tooltip>
 							) : (
-								!(member.role === roles['owner']) && (
-									<Can I='delete' a='Member'>
-										<Button
-											type='button'
-											variant='warning'
-											className='h-9 px-2'
-											onClick={() => handleRemoveMember(member.id)}
-										>
-											Remover da equipe
-										</Button>
-									</Can>
-								)
+								<Can
+									I='delete'
+									this={subject('Member', memberSchema.parse(member))}
+								>
+									<Button
+										type='button'
+										variant='warning'
+										className='h-9 px-2'
+										onClick={() => handleRemoveMember(member.id)}
+									>
+										Remover da equipe
+									</Button>
+								</Can>
 							)}
 						</td>
 					</tr>
