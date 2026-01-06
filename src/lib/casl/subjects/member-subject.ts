@@ -1,4 +1,5 @@
 import z from 'zod'
+import { memberSchema } from '../schemas/member'
 
 export const memberSubject = z.tuple([
 	z.union([
@@ -7,7 +8,7 @@ export const memberSubject = z.tuple([
 		z.literal('delete'),
 		z.literal('manage'),
 	]),
-	z.literal('Member'),
+	z.union([z.literal('Member'), memberSchema]),
 ])
 
 export type MemberSubject = z.infer<typeof memberSubject>
