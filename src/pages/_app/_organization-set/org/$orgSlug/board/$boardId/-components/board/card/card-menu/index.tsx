@@ -1,10 +1,11 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Bolt, Trash2, Users } from 'lucide-react'
+import { Bolt, Trash2, UserCheck } from 'lucide-react'
 import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
 import { ChangeMarkingColorDropdown } from './change-marking-color-dropdown'
 import { RemoveCardDialog } from './remove-card-dialog'
 import { MoveCardDialog } from './move-card-dialog'
+import { Can } from '@/contexts/ability-context'
 
 interface CardMenuProps {
 	task: Task
@@ -36,30 +37,36 @@ export function CardMenu({ task, boardHighlightColor }: CardMenuProps) {
 							variant='raw'
 							className='justify-start gap-2 p-1'
 						>
-							<Users size={18} />
-							Alterar membros
+							<UserCheck size={18} />
+							Atribuir a mim
 						</Button>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
-						<ChangeMarkingColorDropdown
-							taskId={task.id}
-							currentColor={task.markingColor ?? boardHighlightColor}
-						/>
+						<Can I='update' a='Task'>
+							<ChangeMarkingColorDropdown
+								taskId={task.id}
+								currentColor={task.markingColor ?? boardHighlightColor}
+							/>
+						</Can>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
-						<MoveCardDialog taskId={task.id} />
+						<Can I='update' a='Task'>
+							<MoveCardDialog taskId={task.id} />
+						</Can>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
-						<RemoveCardDialog taskId={task.id}>
-							<Button
-								type='button'
-								variant='raw'
-								className='justify-start gap-2 p-1'
-							>
-								<Trash2 size={18} />
-								Remover
-							</Button>
-						</RemoveCardDialog>
+						<Can I='delete' a='Task'>
+							<RemoveCardDialog taskId={task.id}>
+								<Button
+									type='button'
+									variant='raw'
+									className='justify-start gap-2 p-1'
+								>
+									<Trash2 size={18} />
+									Remover
+								</Button>
+							</RemoveCardDialog>
+						</Can>
 					</DropdownMenu.Item>
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>

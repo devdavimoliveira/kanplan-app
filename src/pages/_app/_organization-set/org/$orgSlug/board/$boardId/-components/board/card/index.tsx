@@ -6,6 +6,7 @@ import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
 import { cn } from '@/utils/cn'
 import { CardMenu } from './card-menu'
+import { Can } from '@/contexts/ability-context'
 
 interface BoardCardProps {
 	task: Task
@@ -44,17 +45,19 @@ export function BoardCard({ task, boardHighlightColor }: BoardCardProps) {
 				/>
 				<div className='flex gap-2'>
 					<CardMenu task={task} boardHighlightColor={boardHighlightColor} />
-					<Button
-						variant='ghost'
-						type='button'
-						className={cn(
-							'h-auto cursor-grab',
-							isDragging && 'cursor-grabbing'
-						)}
-						{...listeners}
-					>
-						<GripVertical size={18} />
-					</Button>
+					<Can I='update' a='Task'>
+						<Button
+							variant='ghost'
+							type='button'
+							className={cn(
+								'h-auto cursor-grab',
+								isDragging && 'cursor-grabbing'
+							)}
+							{...listeners}
+						>
+							<GripVertical size={18} />
+						</Button>
+					</Can>
 				</div>
 			</div>
 			<p className='text-justify'>{task.description}</p>
