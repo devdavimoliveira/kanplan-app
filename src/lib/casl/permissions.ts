@@ -13,12 +13,14 @@ export const permissions: Record<Role, PermissionsByRole> = {
 	owner: (_, { can }) => {
 		can('manage', 'all')
 	},
-	admin: (_, { can }) => {
+	admin: (_, { can, cannot }) => {
 		can('manage', 'Board')
 		can('manage', 'Column')
 		can('manage', 'Task')
 		can('manage', 'Invitation')
 		can('manage', 'Member')
+
+		cannot('delete', 'Member', { role: { $in: ['owner', 'admin'] } })
 	},
 	member: (_, { can }) => {
 		can('support', 'Task')
