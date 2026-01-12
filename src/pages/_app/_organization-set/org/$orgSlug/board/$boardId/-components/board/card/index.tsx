@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { GripVertical } from 'lucide-react'
+import { GripVertical, Plus } from 'lucide-react'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
@@ -62,11 +62,22 @@ export function BoardCard({ task, boardHighlightColor }: BoardCardProps) {
 			</div>
 			<p className='text-justify'>{task.description}</p>
 			<div className='flex items-center justify-between'>
-				<Avatar
-					src='https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80'
-					alt='Avatar'
-					fallback='Av'
-				/>
+				{task.assignedUser ? (
+					<Avatar
+						src={task.assignedUser.image ?? ''}
+						alt='Avatar'
+						fallback={task.assignedUser.name.slice(0, 2)}
+						className='bg-zinc-900'
+					/>
+				) : (
+					<Button
+						variant='outline'
+						type='button'
+						className='size-8 rounded-full'
+					>
+						<Plus size={18} />
+					</Button>
+				)}
 			</div>
 		</li>
 	)
