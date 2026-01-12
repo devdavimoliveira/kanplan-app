@@ -7,4 +7,5 @@ export type Task = {
 	createdAt: string | null
 	createdBy: string
 	assignedBy: string | null
+	assignedUser: { id: string; name: string; image: string | null } | null
 }
