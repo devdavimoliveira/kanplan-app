@@ -84,6 +84,7 @@ export function CreateCardForm({
 								createdAt: Date.now().toString(),
 								createdBy,
 								assignedBy: null,
+								assignedUser: null,
 							})
 						})
 					}
