@@ -1,11 +1,12 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Bolt, Trash2, UserCheck } from 'lucide-react'
+import { Bolt, Trash2 } from 'lucide-react'
 import { Button } from '@/components/button'
 import type { Task } from '@/types/Task'
 import { ChangeMarkingColorDropdown } from './change-marking-color-dropdown'
 import { RemoveCardDialog } from './remove-card-dialog'
 import { MoveCardDialog } from './move-card-dialog'
 import { Can } from '@/contexts/ability-context'
+import { AssignButton } from './assign-button'
 
 interface CardMenuProps {
 	task: Task
@@ -32,14 +33,7 @@ export function CardMenu({ task, boardHighlightColor }: CardMenuProps) {
 					className='flex min-w-40 flex-col gap-2 rounded-lg bg-zinc-900 p-2 shadow-md shadow-zinc-900/50'
 				>
 					<DropdownMenu.Item asChild>
-						<Button
-							type='button'
-							variant='raw'
-							className='justify-start gap-2 p-1'
-						>
-							<UserCheck size={18} />
-							Atribuir a mim
-						</Button>
+						<AssignButton task={task} />
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
 						<Can I='update' a='Task'>
