@@ -8,6 +8,7 @@ import {
 	updateTask,
 } from '@/api/tasks/update-task'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
+import { assignTask, type AssignTaskParams } from '@/api/tasks/assign-task'
 
 export const moveTaskMutationOptions = (
 	options?: Omit<
@@ -70,5 +71,21 @@ export const updateTaskMutationOptions = (
 ) =>
 	mutationOptions({
 		mutationFn: ({ params, body }) => updateTask(params, body),
+		...options,
+	})
+
+export const assignTaskMutationOptions = (
+	options?: Omit<
+		MutationOptions<
+			unknown,
+			Error,
+			AssignTaskParams,
+			{ prevBoard?: BoardWithColumnsAndTasks }
+		>,
+		'mutationFn'
+	>
+) =>
+	mutationOptions({
+		mutationFn: ({ taskId, assignedBy }) => assignTask({ taskId, assignedBy }),
 		...options,
 	})
