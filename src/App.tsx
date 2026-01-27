@@ -3,6 +3,7 @@ import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
 import { queryClient } from './lib/query-client'
 import { routeTree } from './route-tree.gen'
+import { DefaultNotFound } from './components/default-not-found'
 
 const router = createRouter({
 	routeTree,
@@ -10,6 +11,7 @@ const router = createRouter({
 	defaultPreload: 'intent',
 	defaultPreloadStaleTime: 0,
 	scrollRestoration: true,
+	defaultNotFoundComponent: DefaultNotFound,
 })
 
 declare module '@tanstack/react-router' {
