@@ -1,12 +1,10 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
 	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
+		"enabled": false
 	},
 	"files": {
-		"ignoreUnknown": false
+		"includes": ["src/**", "!src/assets", "!src/route-tree.gen.ts"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -16,18 +14,13 @@
 	},
 	"linter": {
 		"enabled": true,
-		"includes": ["!**/src/routeTree.gen.ts"],
 		"rules": {
 			"recommended": true,
 			"a11y": {
 				"useValidAriaRole": "off"
 			},
 			"nursery": {
-				"useSortedClasses": {
-					"level": "error",
-					"fix": "safe",
-					"options": {}
-				}
+				"useSortedClasses": "error"
 			},
 			"style": {
 				"noNonNullAssertion": "off"
@@ -46,9 +39,13 @@
 			"trailingCommas": "es5"
 		}
 	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
 	"assist": {
 		"enabled": true,
-		"includes": ["!**/src/routeTree.gen.ts"],
 		"actions": {
 			"source": {
 				"organizeImports": "on"
