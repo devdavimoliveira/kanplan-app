@@ -6,6 +6,7 @@ import { Button } from '@/components/button'
 import { Can } from '@/contexts/ability-context'
 import type { Task } from '@/types/Task'
 import { cn } from '@/utils/cn'
+import { AssignCardDialog } from './assign-card-dialog'
 import { CardMenu } from './card-menu'
 
 interface BoardCardProps {
@@ -70,13 +71,18 @@ export function BoardCard({ task, boardHighlightColor }: BoardCardProps) {
 						className='bg-zinc-900'
 					/>
 				) : (
-					<Button
-						variant='outline'
-						type='button'
-						className='size-8 rounded-full'
-					>
-						<Plus size={18} />
-					</Button>
+					<AssignCardDialog
+						trigger={
+							<Button
+								variant='outline'
+								type='button'
+								className='size-8 rounded-full'
+							>
+								<Plus size={18} />
+							</Button>
+						}
+						task={task}
+					/>
 				)}
 			</div>
 		</li>
