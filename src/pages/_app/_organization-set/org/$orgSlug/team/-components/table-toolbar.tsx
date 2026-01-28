@@ -1,7 +1,7 @@
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { InviteMemberDialog } from './invite-member-dialog'
 import { Can } from '@/contexts/ability-context'
+import { InviteMemberDialog } from './invite-member-dialog'
 
 interface TableToolbarProps {
 	filter: string

@@ -1,18 +1,18 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
-import { MoveRight, X } from 'lucide-react'
-import { Button } from '@/components/button'
-import { useParams } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useParams } from '@tanstack/react-router'
+import { produce } from 'immer'
+import { MoveRight, X } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import z from 'zod'
+import { Button } from '@/components/button'
+import { Select } from '@/components/select'
+import { moveTaskMutationOptions } from '@/mutations/tasks-mutations'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import type { ColumnWithTasks } from '@/types/Column'
-import { useState } from 'react'
-import { moveTaskMutationOptions } from '@/mutations/tasks-mutations'
-import { toast } from 'sonner'
-import { produce } from 'immer'
-import { Select } from '@/components/select'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 interface MoveCardDialogProps {
 	taskId: string
@@ -143,7 +143,7 @@ export function MoveCardDialog({ taskId }: MoveCardDialogProps) {
 			</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-xs' />
-				<Dialog.Content className='-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 w-[90vw] max-w-lg transform rounded-lg bg-zinc-900 shadow-card'>
+				<Dialog.Content className='fixed top-1/2 left-1/2 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-zinc-900 shadow-card'>
 					<Dialog.Title className='p-4 font-medium'>Mover cartão</Dialog.Title>
 
 					<div className='h-px bg-zinc-500' />
@@ -154,7 +154,7 @@ export function MoveCardDialog({ taskId }: MoveCardDialogProps) {
 
 					<form
 						onSubmit={handleSubmit(handleMoveTask)}
-						className='p-4 flex flex-col gap-4'
+						className='flex flex-col gap-4 p-4'
 					>
 						<div>
 							<Select {...register('columnId')}>

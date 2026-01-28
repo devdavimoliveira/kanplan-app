@@ -1,9 +1,9 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
+import { DefaultNotFound } from './components/default-not-found'
 import { queryClient } from './lib/query-client'
 import { routeTree } from './route-tree.gen'
-import { DefaultNotFound } from './components/default-not-found'
 
 const router = createRouter({
 	routeTree,

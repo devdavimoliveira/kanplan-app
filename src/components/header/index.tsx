@@ -21,7 +21,7 @@ export function Header() {
 					<Link to='/'>
 						<img src={kanplanSymbol} alt='Kanplan' className='size-8' />
 					</Link>
-					<Slash className='-rotate-10 size-3.5 text-zinc-500' />
+					<Slash className='size-3.5 -rotate-10 text-zinc-500' />
 				</div>
 
 				{matchOrganizationRoute ? (

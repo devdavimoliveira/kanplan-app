@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_app/account/')({
 function Account() {
 	return (
 		<div className='mx-auto flex max-w-5xl flex-col gap-8 py-8'>
-			<h1 className='text-2xl font-bold'>Conta</h1>
+			<h1 className='font-bold text-2xl'>Conta</h1>
 
 			<UserDetailsForm />
 		</div>

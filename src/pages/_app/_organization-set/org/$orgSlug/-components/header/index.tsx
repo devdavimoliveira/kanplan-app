@@ -1,6 +1,6 @@
+import { useAbility } from '@/contexts/ability-context'
 import { useActiveOrganization } from '@/lib/auth/auth-client'
 import { type ITabs, Tabs } from './tabs'
-import { useAbility } from '@/contexts/ability-context'
 
 export function OrganizationHeader() {
 	const { data: activeOrganization } = useActiveOrganization()

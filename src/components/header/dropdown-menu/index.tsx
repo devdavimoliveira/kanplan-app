@@ -1,10 +1,10 @@
 import * as DropdownPrimitive from '@radix-ui/react-dropdown-menu'
+import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useRouteContext } from '@tanstack/react-router'
 import { CircleUserRound, LayoutDashboard, LogOut } from 'lucide-react'
 import { Avatar } from '@/components/avatar'
 import { signOut } from '@/lib/auth/auth-client'
 import { DropdownMenuItem } from './item'
-import { useQueryClient } from '@tanstack/react-query'
 
 export function DropdownMenu() {
 	const navigate = useNavigate()

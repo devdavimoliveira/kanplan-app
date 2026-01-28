@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouteContext } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -6,7 +7,6 @@ import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
-import { useRouteContext } from '@tanstack/react-router'
 
 const organizationDetailsSchema = z.object({
 	name: z.string().nonempty('Insira um nome'),

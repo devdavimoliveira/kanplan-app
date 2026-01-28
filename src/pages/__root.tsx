@@ -1,4 +1,3 @@
-import { sessionQueryOptions } from '@/queries/session-query'
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
@@ -7,6 +6,7 @@ import {
 	Outlet,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { sessionQueryOptions } from '@/queries/session-query'
 
 interface RootRouteContext {
 	queryClient: QueryClient

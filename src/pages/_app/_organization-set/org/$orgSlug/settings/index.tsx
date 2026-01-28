@@ -1,9 +1,9 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { toast } from 'sonner'
+import { getUserPermissions } from '@/lib/casl/permissions'
+import type { Role } from '@/types/Role'
 import { OrganizationDangerZone } from './-components/organization-danger-zone'
 import { OrganizationDetailsForm } from './-components/organization-details-form'
-import type { Role } from '@/types/Role'
-import { getUserPermissions } from '@/lib/casl/permissions'
 
 export const Route = createFileRoute(
 	'/_app/_organization-set/org/$orgSlug/settings/'

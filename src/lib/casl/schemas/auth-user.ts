@@ -1,5 +1,5 @@
-import { roleSchema } from '@/types/Role'
 import z from 'zod'
+import { roleSchema } from '@/types/Role'
 
 export const authUserSchema = z.object({
 	id: z.string(),

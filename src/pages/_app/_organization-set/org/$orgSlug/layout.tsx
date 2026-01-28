@@ -1,11 +1,11 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { OrganizationHeader } from './-components/header'
 import { toast } from 'sonner'
-import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
-import { organization } from '@/lib/auth/auth-client'
 import { AbilityProvider } from '@/contexts/ability-context'
+import { organization } from '@/lib/auth/auth-client'
 import type { AuthUser } from '@/lib/casl/schemas/auth-user'
 import type { Role } from '@/types/Role'
+import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
+import { OrganizationHeader } from './-components/header'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
 	beforeLoad: async ({ params }) => {

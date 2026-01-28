@@ -26,7 +26,7 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
 				type='button'
 				variant='ghost'
 				onClick={toggleVisibility}
-				className='-translate-y-1/2 absolute top-1/2 right-2 h-auto transform rounded-full p-2'
+				className='absolute top-1/2 right-2 h-auto -translate-y-1/2 transform rounded-full p-2'
 			>
 				{isVisible ? <Eye size={18} /> : <EyeOff size={18} />}
 			</Button>

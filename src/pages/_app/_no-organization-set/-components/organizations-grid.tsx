@@ -1,5 +1,5 @@
-import { OrganizationCard } from './organization-card'
 import { useListOrganizations } from '@/lib/auth/auth-client'
+import { OrganizationCard } from './organization-card'
 import { OrganizationCardSkeleton } from './organization-card-skeleton'
 
 export function OrganizationsGrid() {

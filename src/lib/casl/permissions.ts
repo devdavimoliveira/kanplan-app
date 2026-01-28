@@ -1,8 +1,8 @@
-import type { AuthUser, authUserSchema } from './schemas/auth-user'
-import { defineAbilityFor, type AppAbility } from './ability'
-import { AbilityBuilder } from '@casl/ability'
+import type { AbilityBuilder } from '@casl/ability'
+import type z from 'zod'
 import type { Role } from '@/types/Role'
-import z from 'zod'
+import { type AppAbility, defineAbilityFor } from './ability'
+import type { AuthUser, authUserSchema } from './schemas/auth-user'
 
 type PermissionsByRole = (
 	user: AuthUser,

@@ -1,8 +1,7 @@
-import { defineAbilityFor, type AppAbility } from '@/lib/casl/ability'
-import { createContext, type ReactNode } from 'react'
 import { createContextualCan } from '@casl/react'
+import { createContext, type ReactNode, useContext } from 'react'
+import { type AppAbility, defineAbilityFor } from '@/lib/casl/ability'
 import type { AuthUser } from '@/lib/casl/schemas/auth-user'
-import { useContext } from 'react'
 
 export const AbilityContext = createContext({} as AppAbility)
 export const Can = createContextualCan(AbilityContext.Consumer)

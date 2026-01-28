@@ -3,10 +3,10 @@ import { CSS } from '@dnd-kit/utilities'
 import { GripVertical, Plus } from 'lucide-react'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
+import { Can } from '@/contexts/ability-context'
 import type { Task } from '@/types/Task'
 import { cn } from '@/utils/cn'
 import { CardMenu } from './card-menu'
-import { Can } from '@/contexts/ability-context'
 
 interface BoardCardProps {
 	task: Task

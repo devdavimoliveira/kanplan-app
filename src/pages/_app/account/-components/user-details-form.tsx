@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouteContext } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { useRouteContext } from '@tanstack/react-router'
 
 const userDetailsSchema = z.object({
 	name: z.string().nonempty('Insira um nome'),

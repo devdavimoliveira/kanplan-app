@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
+import { useRouteContext } from '@tanstack/react-router'
 import { type ReactNode, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -11,7 +12,6 @@ import { organization } from '@/lib/auth/auth-client'
 import { roleSchema, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
-import { useRouteContext } from '@tanstack/react-router'
 
 interface InviteMemberDialogProps {
 	trigger: ReactNode
@@ -66,7 +66,7 @@ export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
 
 			<Dialog.Portal>
 				<Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-xs' />
-				<Dialog.Content className='-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 w-[90vw] max-w-lg transform rounded-lg bg-zinc-900 shadow-card'>
+				<Dialog.Content className='fixed top-1/2 left-1/2 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-zinc-900 shadow-card'>
 					<Dialog.Title className='p-4 font-medium'>
 						Convidar novo membro
 					</Dialog.Title>
@@ -84,7 +84,7 @@ export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
 					>
 						<Select
 							id='select-role'
-							defaultValue={roles['member']}
+							defaultValue={roles.member}
 							{...register('role')}
 						>
 							{Object.values(roles).map(role => (

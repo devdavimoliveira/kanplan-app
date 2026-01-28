@@ -1,4 +1,5 @@
 import { type MutationOptions, mutationOptions } from '@tanstack/react-query'
+import { type AssignTaskParams, assignTask } from '@/api/tasks/assign-task'
 import { type CreateTaskBody, createTask } from '@/api/tasks/create-task'
 import { type MoveTaskBody, moveTask } from '@/api/tasks/move-task'
 import { type RemoveTaskParams, removeTask } from '@/api/tasks/remove-task'
@@ -8,7 +9,6 @@ import {
 	updateTask,
 } from '@/api/tasks/update-task'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
-import { assignTask, type AssignTaskParams } from '@/api/tasks/assign-task'
 
 export const moveTaskMutationOptions = (
 	options?: Omit<

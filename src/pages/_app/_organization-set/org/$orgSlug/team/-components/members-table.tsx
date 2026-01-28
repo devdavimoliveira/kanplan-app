@@ -1,17 +1,16 @@
+import { subject } from '@casl/ability'
 import { useNavigate, useRouteContext } from '@tanstack/react-router'
+import { useMemo } from 'react'
 import { toast } from 'sonner'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import { Tooltip } from '@/components/tooltip'
+import { Can } from '@/contexts/ability-context'
 import { organization, useActiveOrganization } from '@/lib/auth/auth-client'
+import { memberSchema } from '@/lib/casl/schemas/member'
 import { type Role, roles } from '@/types/Role'
 import { getAuthErrorMessage } from '@/utils/get-auth-error-message'
 import { translateRoleToPtBR } from '@/utils/translate-role-to-pt-br'
-
-import { useMemo } from 'react'
-import { Can } from '@/contexts/ability-context'
-import { memberSchema } from '@/lib/casl/schemas/member'
-import { subject } from '@casl/ability'
 
 interface MembersTableProps {
 	filter: string
@@ -109,13 +108,13 @@ export function MembersTable({ filter }: MembersTableProps) {
 								<Tooltip
 									side='bottom'
 									content='Você não pode sair da organização pois é o único proprietário'
-									disabled={!(member.role === roles['owner'])}
+									disabled={!(member.role === roles.owner)}
 								>
 									<Button
 										type='button'
 										variant='outline'
 										className='h-9 px-2'
-										disabled={member.role === roles['owner']}
+										disabled={member.role === roles.owner}
 										onClick={handleLeaveOrganization}
 									>
 										Deixar equipe

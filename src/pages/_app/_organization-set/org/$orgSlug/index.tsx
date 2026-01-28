@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Button } from '@/components/button'
-import { BoardsGrid } from './-components/boards-grid'
-import { NewBoardDialog } from './-components/new-board-dialog'
 import { Suspense } from 'react'
-import { BoardsGridFallback } from './-components/boards-grid-fallback'
-import { boardsByOrganizationIdQueryOptions } from '@/queries/organization-queries'
+import { Button } from '@/components/button'
 import { Can } from '@/contexts/ability-context'
+import { boardsByOrganizationIdQueryOptions } from '@/queries/organization-queries'
+import { BoardsGrid } from './-components/boards-grid'
+import { BoardsGridFallback } from './-components/boards-grid-fallback'
+import { NewBoardDialog } from './-components/new-board-dialog'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug/')({
 	loader: ({ context: { queryClient, activeOrganization } }) => {

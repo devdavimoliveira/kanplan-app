@@ -111,7 +111,7 @@ export function NewColumnButton({ board }: NewColumnButtonProps) {
 			</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-xs'></Dialog.Overlay>
-				<Dialog.Content className='-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 w-[90vw] max-w-96 transform rounded-lg bg-zinc-900 shadow-card'>
+				<Dialog.Content className='fixed top-1/2 left-1/2 w-[90vw] max-w-96 -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-zinc-900 shadow-card'>
 					<VisuallyHidden>
 						<Dialog.Title>Nova coluna</Dialog.Title>
 					</VisuallyHidden>

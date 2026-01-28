@@ -1,8 +1,8 @@
 import { Link, useMatchRoute, useParams } from '@tanstack/react-router'
+import { Can } from '@/contexts/ability-context'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import { cn } from '@/utils/cn'
 import { NewColumnButton } from './new-column-button'
-import { Can } from '@/contexts/ability-context'
 
 interface BoardToolbarProps {
 	board: BoardWithColumnsAndTasks

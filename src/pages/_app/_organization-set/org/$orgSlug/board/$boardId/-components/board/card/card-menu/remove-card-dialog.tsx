@@ -45,7 +45,7 @@ export function RemoveCardDialog({ taskId, children }: RemoveCardDialogProps) {
 			<Dialog.Trigger asChild>{children}</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-xs' />
-				<Dialog.Content className='-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 w-[90vw] max-w-lg transform rounded-lg bg-zinc-900 shadow-card'>
+				<Dialog.Content className='fixed top-1/2 left-1/2 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-zinc-900 shadow-card'>
 					<Dialog.Title className='p-4 font-medium'>
 						Remover tarefa
 					</Dialog.Title>

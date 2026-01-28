@@ -2,11 +2,11 @@ import { useDroppable } from '@dnd-kit/core'
 import { EllipsisVertical, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/button'
+import { Can } from '@/contexts/ability-context'
 import type { ColumnWithTasks } from '@/types/Column'
 import { cn } from '@/utils/cn'
 import { BoardCard } from '../card'
 import { CreateCardForm } from './create-card-form'
-import { Can } from '@/contexts/ability-context'
 
 interface BoardColumnProps {
 	column: ColumnWithTasks
