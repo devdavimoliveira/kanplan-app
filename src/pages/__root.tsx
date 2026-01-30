@@ -6,6 +6,7 @@ import {
 	Outlet,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { Spinner } from '@/components/spinner'
 import { sessionQueryOptions } from '@/queries/session-query'
 
 interface RootRouteContext {
@@ -21,6 +22,7 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
 		return { session }
 	},
 	component: RootComponent,
+	pendingComponent: LoadingScreen,
 })
 
 function RootComponent() {
@@ -31,5 +33,13 @@ function RootComponent() {
 			<TanStackRouterDevtools position='bottom-left' />
 			<ReactQueryDevtools buttonPosition='bottom-right' />
 		</>
+	)
+}
+
+function LoadingScreen() {
+	return (
+		<div className='flex h-dvh items-center justify-center'>
+			<Spinner />
+		</div>
 	)
 }
