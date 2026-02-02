@@ -9,15 +9,17 @@ import { OrganizationHeader } from './-components/header'
 
 export const Route = createFileRoute('/_app/_organization-set/org/$orgSlug')({
 	beforeLoad: async ({ params }) => {
-		const { data: activeOrganization, error: activeOrganizationError } =
-			await organization.setActive({
-				organizationSlug: params.orgSlug,
-			})
+		const { error: activeOrganizationError } = await organization.setActive({
+			organizationSlug: params.orgSlug,
+		})
 
 		if (activeOrganizationError) {
 			toast.error(getAuthErrorMessage(activeOrganizationError.code!))
 			throw redirect({ to: '/organizations' })
 		}
+
+		const { data: activeOrganization } =
+			await organization.getFullOrganization()
 
 		const { data: activeMember, error: activeMemberError } =
 			await organization.getActiveMember()
