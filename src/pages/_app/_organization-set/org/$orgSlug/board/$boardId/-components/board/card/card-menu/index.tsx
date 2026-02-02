@@ -5,6 +5,7 @@ import { Can } from '@/contexts/ability-context'
 import type { Task } from '@/types/Task'
 import { AssignButton } from './assign-button'
 import { ChangeMarkingColorDropdown } from './change-marking-color-dropdown'
+import { EditCardDialog } from './edit-card-dialog'
 import { MoveCardDialog } from './move-card-dialog'
 import { RemoveCardDialog } from './remove-card-dialog'
 
@@ -60,6 +61,11 @@ export function CardMenu({ task, boardHighlightColor }: CardMenuProps) {
 									Remover
 								</Button>
 							</RemoveCardDialog>
+						</Can>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item asChild>
+						<Can I='update' a='Task'>
+							<EditCardDialog task={task} />
 						</Can>
 					</DropdownMenu.Item>
 				</DropdownMenu.Content>
