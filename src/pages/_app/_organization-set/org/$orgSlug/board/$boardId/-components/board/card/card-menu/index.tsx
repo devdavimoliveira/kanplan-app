@@ -64,9 +64,7 @@ export function CardMenu({ task, boardHighlightColor }: CardMenuProps) {
 						</Can>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item asChild>
-						<Can I='update' a='Task'>
-							<EditCardDialog task={task} />
-						</Can>
+						<EditCardDialog task={task} />
 					</DropdownMenu.Item>
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>

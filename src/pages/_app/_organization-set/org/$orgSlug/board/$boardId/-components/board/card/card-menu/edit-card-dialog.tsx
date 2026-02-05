@@ -2,25 +2,31 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useParams } from '@tanstack/react-router'
+import { useParams, useRouteContext } from '@tanstack/react-router'
 import { produce } from 'immer'
-import { PenLine, X } from 'lucide-react'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { CircleEllipsis, X } from 'lucide-react'
+import { useId, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
+import { useAbility } from '@/contexts/ability-context'
 import { updateTaskMutationOptions } from '@/mutations/tasks-mutations'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import type { Task } from '@/types/Task'
 import { cn } from '@/utils/cn'
+import { AssignedUserSelect } from './assigned-user-select'
 
 const editCardSchema = z.object({
 	description: z.string().nonempty('Insira a descrição da tarefa'),
+	assignedBy: z
+		.string()
+		.nullable()
+		.transform(value => (value === '' ? null : value)),
 })
 
-type EditCardFormType = z.infer<typeof editCardSchema>
+export type EditCardFormType = z.infer<typeof editCardSchema>
 
 interface EditCardDialogProps {
 	task: Task
@@ -29,23 +35,48 @@ interface EditCardDialogProps {
 export function EditCardDialog({ task }: EditCardDialogProps) {
 	const [open, setOpen] = useState(false)
 
+	const { can } = useAbility()
+
+	const canUpdateTask = can('update', 'Task')
+
 	const queryClient = useQueryClient()
 
 	const { boardId } = useParams({
 		from: '/_app/_organization-set/org/$orgSlug/board/$boardId/',
 	})
 
+	const { activeOrganization } = useRouteContext({
+		from: '/_app/_organization-set/org/$orgSlug',
+	})
+
+	const descriptionFieldId = useId()
+
+	const methods = useForm<EditCardFormType>({
+		resolver: zodResolver(editCardSchema),
+		values: {
+			description: task.description,
+			assignedBy: task.assignedBy ?? '',
+		},
+	})
+
+	const {
+		handleSubmit,
+		register,
+		formState: { isDirty, errors },
+	} = methods
+
 	const { mutate } = useMutation(
 		updateTaskMutationOptions({
-			onMutate: async ({ params: { taskId }, body: { description } }) => {
+			onMutate: async ({
+				params: { taskId },
+				body: { description, assignedBy },
+			}) => {
 				await queryClient.cancelQueries({ queryKey: ['board', boardId] })
 
 				const prevBoard = queryClient.getQueryData<BoardWithColumnsAndTasks>([
 					'board',
 					boardId,
 				])
-
-				if (!description) return { prevBoard }
 
 				queryClient.setQueryData(
 					['board', boardId],
@@ -58,9 +89,27 @@ export function EditCardDialog({ task }: EditCardDialogProps) {
 							task => task.id === taskId
 						)
 
+						const member = activeOrganization!.members.find(
+							member => member.userId === assignedBy
+						)
+
+						const assignedUser = member
+							? {
+									id: member.userId,
+									name: member.user.name,
+									image: member.user.image ?? null,
+								}
+							: null
+
 						return produce(old, draft => {
 							draft.columns[columnIndex].tasks[taskIndex].description =
-								description
+								description ?? ''
+
+							draft.columns[columnIndex].tasks[taskIndex].assignedBy =
+								assignedBy ?? null
+
+							draft.columns[columnIndex].tasks[taskIndex].assignedUser =
+								assignedUser
 						})
 					}
 				)
@@ -78,22 +127,14 @@ export function EditCardDialog({ task }: EditCardDialogProps) {
 		})
 	)
 
-	const {
-		handleSubmit,
-		register,
-		formState: { isDirty, errors },
-	} = useForm<EditCardFormType>({
-		resolver: zodResolver(editCardSchema),
-		values: {
-			description: task.description,
-		},
-	})
-
 	function handleSave(data: EditCardFormType) {
 		mutate(
 			{
 				params: { taskId: task.id },
-				body: { description: data.description },
+				body: {
+					description: data.description,
+					assignedBy: data.assignedBy,
+				},
 			},
 			{
 				onError: () =>
@@ -107,73 +148,74 @@ export function EditCardDialog({ task }: EditCardDialogProps) {
 		<Dialog.Root open={open} onOpenChange={setOpen}>
 			<Dialog.Trigger asChild>
 				<Button type='button' variant='raw' className='justify-start gap-2 p-1'>
-					<PenLine size={18} />
-					Editar tarefa
+					<CircleEllipsis size={18} />
+					Mais opções
 				</Button>
 			</Dialog.Trigger>
 
 			<Dialog.Portal>
 				<Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-xs' />
 				<Dialog.Content className='fixed top-1/2 left-1/2 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-zinc-900 shadow-card'>
-					<Dialog.Title className='p-4 font-medium'>Editar tarefa</Dialog.Title>
+					<Dialog.Title className='p-4 font-medium'>
+						Informações da tarefa
+					</Dialog.Title>
 
 					<VisuallyHidden>
-						<Dialog.Description>Editando tarefa</Dialog.Description>
+						<Dialog.Description>Informações da tarefa</Dialog.Description>
 					</VisuallyHidden>
 
 					<div className='h-px bg-zinc-500' />
 
-					<form
-						className='flex flex-col gap-4 p-4'
-						onSubmit={handleSubmit(handleSave)}
-					>
-						<div className='flex flex-col gap-1'>
-							<textarea
-								rows={3}
-								placeholder='Insira a descrição da tarefa'
-								className={cn(
-									'w-full resize-none rounded-lg p-2 outline-2 outline-zinc-800 focus-visible:outline-cyan-500 focus-visible:outline-solid',
-									errors?.description && 'focus-visible:outline-red-500'
+					<FormProvider {...methods}>
+						<form
+							className='flex flex-col gap-4 p-4'
+							onSubmit={handleSubmit(handleSave)}
+						>
+							<div className='flex flex-col gap-2'>
+								<label htmlFor={descriptionFieldId} className='ml-2 text-sm'>
+									Descrição
+								</label>
+								<textarea
+									id={descriptionFieldId}
+									rows={3}
+									placeholder='Insira a descrição da tarefa'
+									className={cn(
+										'w-full resize-none rounded-lg p-2 outline-2 outline-zinc-800 focus-visible:outline-cyan-500 focus-visible:outline-solid',
+										errors?.description && 'focus-visible:outline-red-500'
+									)}
+									disabled={!canUpdateTask}
+									{...register('description')}
+								/>
+								{errors?.description && (
+									<span className='ml-2 text-red-500'>
+										{errors.description.message}
+									</span>
 								)}
-								{...register('description')}
-							/>
-							{errors?.description && (
-								<span className='ml-2 text-red-500'>
-									{errors.description.message}
-								</span>
-							)}
-						</div>
+							</div>
 
-						<div className='flex flex-col gap-1 self-end text-sm text-zinc-600'>
-							<div className='flex items-center gap-1'>
-								<span>Atribuído a:</span>
-								{task.assignedUser && (
+							<div className='flex flex-col gap-2 self-end text-sm text-zinc-600'>
+								<div className='flex items-center gap-1'>
+									<span>Atribuído a:</span>
+									<AssignedUserSelect />
+								</div>
+
+								<div className='flex items-center gap-1'>
+									<span>Criado por:</span>
 									<Avatar
-										src={task.assignedUser?.image ?? ''}
-										alt={task.assignedUser.name.slice(0, 2)}
-										fallback={task.assignedUser.name.slice(0, 2)}
+										src={task.createdUser?.image ?? ''}
+										alt={task.createdUser?.name.slice(0, 2)}
+										fallback={task.createdUser?.name.slice(0, 2)}
 										className='size-7'
 									/>
-								)}
-								{task.assignedUser?.name ?? (
-									<span className='font-bold text-red-500'>Ninguém</span>
-								)}
+									<span className='font-bold'>{task.createdUser.name}</span>
+								</div>
 							</div>
 
-							<div className='flex items-center gap-1'>
-								<span>Criado por:</span>
-								<Avatar
-									src={task.createdUser?.image ?? ''}
-									alt={task.createdUser?.name.slice(0, 2)}
-									fallback={task.createdUser?.name.slice(0, 2)}
-									className='size-7'
-								/>
-								<span className='font-bold'>{task.createdUser.name}</span>
-							</div>
-						</div>
-
-						<Button disabled={!isDirty}>Salvar</Button>
-					</form>
+							<Button disabled={!isDirty} hidden={!canUpdateTask}>
+								Salvar
+							</Button>
+						</form>
+					</FormProvider>
 
 					<Dialog.Close asChild>
 						<Button variant='raw' className='absolute top-2 right-1.5 p-0.5'>
