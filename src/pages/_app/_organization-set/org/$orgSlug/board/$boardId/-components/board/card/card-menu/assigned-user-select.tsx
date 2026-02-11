@@ -2,12 +2,17 @@ import * as Select from '@radix-ui/react-select'
 import { useRouteContext } from '@tanstack/react-router'
 import { ChevronDown } from 'lucide-react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useAbility } from '@/contexts/ability-context'
 import type { EditCardFormType } from './edit-card-dialog'
 
 export function AssignedUserSelect() {
 	const { activeOrganization } = useRouteContext({
 		from: '/_app/_organization-set/org/$orgSlug',
 	})
+
+	const { can } = useAbility()
+
+	const canUpdateTask = can('update', 'Task')
 
 	const { control } = useFormContext<EditCardFormType>()
 
@@ -27,10 +32,11 @@ export function AssignedUserSelect() {
 				<Select.Root
 					value={value ?? ''}
 					onValueChange={value => handleChange(value, onChange)}
+					disabled={!canUpdateTask}
 				>
 					<Select.Trigger className='inline-flex h-8 w-30 items-center justify-between rounded-lg bg-zinc-800 p-2'>
 						<Select.Value placeholder='Ninguém' />
-						<Select.Icon className='pl-0.5'>
+						<Select.Icon className='pl-0.5' hidden={!canUpdateTask}>
 							<ChevronDown />
 						</Select.Icon>
 					</Select.Trigger>

@@ -11,8 +11,11 @@ import { toast } from 'sonner'
 import z from 'zod'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
-import { useAbility } from '@/contexts/ability-context'
-import { updateTaskMutationOptions } from '@/mutations/tasks-mutations'
+import { Can, useAbility } from '@/contexts/ability-context'
+import {
+	assignTaskMutationOptions,
+	updateTaskMutationOptions,
+} from '@/mutations/tasks-mutations'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
 import type { Task } from '@/types/Task'
 import { cn } from '@/utils/cn'
@@ -45,7 +48,7 @@ export function EditCardDialog({ task }: EditCardDialogProps) {
 		from: '/_app/_organization-set/org/$orgSlug/board/$boardId/',
 	})
 
-	const { activeOrganization } = useRouteContext({
+	const { activeOrganization, authUser } = useRouteContext({
 		from: '/_app/_organization-set/org/$orgSlug',
 	})
 
@@ -144,6 +147,66 @@ export function EditCardDialog({ task }: EditCardDialogProps) {
 		)
 	}
 
+	const { mutate: assignTaskMutate } = useMutation(
+		assignTaskMutationOptions({
+			onMutate: async ({ assignedBy }) => {
+				await queryClient.cancelQueries({ queryKey: ['board', boardId] })
+
+				const prevBoard = queryClient.getQueryData<BoardWithColumnsAndTasks>([
+					'board',
+					boardId,
+				])
+
+				queryClient.setQueryData(
+					['board', boardId],
+					(old: BoardWithColumnsAndTasks) => {
+						const prevColumnIndex = old.columns.findIndex(col =>
+							col.tasks.some(t => t.id === task.id)
+						)
+
+						const prevTaskIndex = old.columns[prevColumnIndex].tasks.findIndex(
+							t => t.id === task.id
+						)
+
+						const member = activeOrganization!.members.find(
+							member => member.userId === assignedBy
+						)
+
+						const assignedUser = member
+							? {
+									id: member.userId,
+									name: member.user.name,
+									image: member.user.image ?? null,
+								}
+							: null
+
+						return produce(old, draft => {
+							draft.columns[prevColumnIndex].tasks[prevTaskIndex].assignedBy =
+								assignedBy ?? null
+
+							draft.columns[prevColumnIndex].tasks[prevTaskIndex].assignedUser =
+								assignedUser
+						})
+					}
+				)
+
+				return { prevBoard }
+			},
+			onError: (_, __, context) => {
+				if (context?.prevBoard) {
+					queryClient.setQueryData(['board', boardId], context.prevBoard)
+				}
+			},
+			onSettled: () => {
+				queryClient.invalidateQueries({ queryKey: ['board', boardId] })
+			},
+		})
+	)
+
+	function assignTask(assignedBy: string | null) {
+		assignTaskMutate({ taskId: task.id, assignedBy })
+	}
+
 	return (
 		<Dialog.Root open={open} onOpenChange={setOpen}>
 			<Dialog.Trigger asChild>
@@ -194,9 +257,34 @@ export function EditCardDialog({ task }: EditCardDialogProps) {
 							</div>
 
 							<div className='flex flex-col gap-2 self-end text-sm text-zinc-600'>
-								<div className='flex items-center gap-1'>
-									<span>Atribuído a:</span>
-									<AssignedUserSelect />
+								<div className='flex flex-col gap-1'>
+									<div className='flex items-center gap-1'>
+										<span>Atribuído a:</span>
+										<AssignedUserSelect />
+									</div>
+									<Can I='support' a='Task'>
+										{task.assignedBy === null ? (
+											<Button
+												type='button'
+												variant='link'
+												className='h-auto self-end'
+												onClick={() => assignTask(authUser.id)}
+											>
+												Atribuir a mim
+											</Button>
+										) : (
+											task.assignedBy === authUser.id && (
+												<Button
+													type='button'
+													variant='link'
+													className='h-auto self-end'
+													onClick={() => assignTask(null)}
+												>
+													Deixar tarefa
+												</Button>
+											)
+										)}
+									</Can>
 								</div>
 
 								<div className='flex items-center gap-1'>
