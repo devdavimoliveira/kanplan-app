@@ -115,9 +115,9 @@ export function MoveCardDialog({ taskId }: MoveCardDialogProps) {
 		mutate(
 			{
 				taskId: data.taskId,
-				newColumnId: data.columnId,
-				beforeTaskId: null,
-				afterTaskId: firstTaskIdOfSelectedColumn ?? null,
+				targetColumnId: data.columnId,
+				aboveTaskId: null,
+				belowTaskId: firstTaskIdOfSelectedColumn ?? null,
 			},
 			{
 				onError: () => {
