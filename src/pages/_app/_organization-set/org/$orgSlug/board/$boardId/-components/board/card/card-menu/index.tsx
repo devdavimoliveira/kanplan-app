@@ -2,7 +2,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { Bolt, Trash2 } from 'lucide-react'
 import { Button } from '@/components/button'
 import { Can } from '@/contexts/ability-context'
-import type { Task } from '@/types/Task'
+import type { TaskWithUserRelations } from '@/types/Task'
 import { AssignButton } from './assign-button'
 import { ChangeMarkingColorDropdown } from './change-marking-color-dropdown'
 import { EditCardDialog } from './edit-card-dialog'
@@ -10,7 +10,7 @@ import { MoveCardDialog } from './move-card-dialog'
 import { RemoveCardDialog } from './remove-card-dialog'
 
 interface CardMenuProps {
-	task: Task
+	task: TaskWithUserRelations
 	boardHighlightColor: string
 }
 

@@ -17,7 +17,7 @@ import {
 	updateTaskMutationOptions,
 } from '@/mutations/tasks-mutations'
 import type { BoardWithColumnsAndTasks } from '@/types/Board'
-import type { Task } from '@/types/Task'
+import type { TaskWithUserRelations } from '@/types/Task'
 import { cn } from '@/utils/cn'
 import { AssignedUserSelect } from './assigned-user-select'
 
@@ -32,7 +32,7 @@ const editCardSchema = z.object({
 export type EditCardFormType = z.infer<typeof editCardSchema>
 
 interface EditCardDialogProps {
-	task: Task
+	task: TaskWithUserRelations
 }
 
 export function EditCardDialog({ task }: EditCardDialogProps) {

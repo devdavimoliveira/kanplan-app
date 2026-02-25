@@ -85,6 +85,11 @@ export function CreateCardForm({
 								createdBy,
 								assignedBy: null,
 								assignedUser: null,
+								createdUser: {
+									id: createdBy,
+									name: activeMember.user.name,
+									image: activeMember.user?.image ?? null,
+								},
 							})
 						})
 					}

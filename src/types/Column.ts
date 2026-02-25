@@ -1,4 +1,4 @@
-import type { Task } from './Task'
+import type { TaskWithUserRelations } from './Task'
 
 export type Column = {
 	id: string
@@ -9,5 +9,5 @@ export type Column = {
 }
 
 export type ColumnWithTasks = Column & {
-	tasks: Task[]
+	tasks: TaskWithUserRelations[]
 }

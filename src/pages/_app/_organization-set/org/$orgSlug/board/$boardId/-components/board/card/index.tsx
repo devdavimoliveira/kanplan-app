@@ -4,13 +4,13 @@ import { GripVertical, Plus } from 'lucide-react'
 import { Avatar } from '@/components/avatar'
 import { Button } from '@/components/button'
 import { Can } from '@/contexts/ability-context'
-import type { Task } from '@/types/Task'
+import type { TaskWithUserRelations } from '@/types/Task'
 import { cn } from '@/utils/cn'
 import { AssignCardDialog } from './assign-card-dialog'
 import { CardMenu } from './card-menu'
 
 interface BoardCardProps {
-	task: Task
+	task: TaskWithUserRelations
 	boardHighlightColor: string
 }
 
